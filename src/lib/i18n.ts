@@ -58,8 +58,13 @@ const fr: Dict = {
   no_results: "Aucun résultat",
 
   role_medecin: "Médecin",
-  role_secretaire: "Secrétaire",
+  role_secretaire: "Assistante",
   role_admin: "Administrateur",
+  role_active: "Rôle actif",
+  profile: "Mon profil",
+  notifications: "Notifications",
+  settings: "Paramètres",
+  logout: "Se déconnecter",
 
   kpi_today_patients: "Patients du jour",
   kpi_upcoming_rdv: "RDV à venir",
@@ -118,8 +123,13 @@ const ar: Dict = {
   no_results: "لا توجد نتائج",
 
   role_medecin: "طبيب",
-  role_secretaire: "سكرتير",
+  role_secretaire: "مساعِدة",
   role_admin: "مسؤول",
+  role_active: "الدور النشط",
+  profile: "ملفي الشخصي",
+  notifications: "الإشعارات",
+  settings: "الإعدادات",
+  logout: "تسجيل الخروج",
 
   kpi_today_patients: "مرضى اليوم",
   kpi_upcoming_rdv: "المواعيد القادمة",

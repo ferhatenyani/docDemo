@@ -14,7 +14,7 @@ import type { Role, Utilisateur } from "@/lib/types";
 
 const ROLE_OPTS: { value: Role; label: string }[] = [
   { value: "MEDECIN", label: "Médecin" },
-  { value: "SECRETAIRE", label: "Secrétaire" },
+  { value: "SECRETAIRE", label: "Assistante" },
   { value: "ADMIN", label: "Administrateur" },
 ];
 
@@ -106,7 +106,7 @@ export default function AdministrationPage() {
                         </td>
                         <td className="px-4 py-2.5">
                           <Badge tone={u.role === "MEDECIN" ? "brand" : u.role === "ADMIN" ? "danger" : "info"} size="sm">
-                            {u.role === "MEDECIN" ? "Médecin" : u.role === "SECRETAIRE" ? "Secrétaire" : "Admin"}
+                            {u.role === "MEDECIN" ? "Médecin" : u.role === "SECRETAIRE" ? "Assistante" : "Admin"}
                           </Badge>
                         </td>
                         <td className="px-4 py-2.5 text-ink-700">{u.email}</td>

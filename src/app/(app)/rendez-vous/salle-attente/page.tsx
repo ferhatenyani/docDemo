@@ -40,24 +40,47 @@ export default function SalleAttentePage() {
                 const p = patients.find((x) => x.id === r.patient_id);
                 if (!p) return null;
                 return (
-                  <div key={r.id} className="px-4 py-2.5 flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-md bg-ink-900 text-white grid place-items-center text-[12px] font-semibold shrink-0 tabular">{i + 1}</div>
-                    <Avatar name={`${p.prenom} ${p.nom}`} size={32} />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[13px] font-medium text-ink-900 truncate">{p.prenom} {p.nom}</div>
-                      <div className="text-[11px] text-ink-500 truncate">
-                        <span className="tabular font-medium">{r.heure}</span> · {r.motif}
+                  <div key={r.id} className="px-3 sm:px-4 py-2.5">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <div className="h-8 w-8 rounded-md bg-ink-900 text-white grid place-items-center text-[12px] font-semibold shrink-0 tabular">{i + 1}</div>
+                      <Avatar name={`${p.prenom} ${p.nom}`} size={32} />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[13px] font-medium text-ink-900 truncate">{p.prenom} {p.nom}</div>
+                        <div className="text-[11px] text-ink-500 truncate">
+                          <span className="tabular font-medium">{r.heure}</span> · {r.motif}
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-1 shrink-0">
+                        <Link href={`/consultations/nouveau?patient=${p.id}&rdv=${r.id}`}>
+                          <Button size="sm" variant="dark" leftIcon={<Stethoscope className="h-3.5 w-3.5" />}>Consulter</Button>
+                        </Link>
+                        <button
+                          aria-label="Marquer absent"
+                          title="Marquer absent"
+                          onClick={() => { updateRdv(r.id, { statut: "ABSENT" }); pushToast({ title: "Marqué comme absent", tone: "warning" }); }}
+                          className="h-8 w-8 grid place-items-center rounded-md hover:bg-warning-soft text-warning cursor-pointer transition-colors"
+                        >
+                          <User2 className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          aria-label="Annuler"
+                          title="Annuler le RDV"
+                          onClick={() => { updateRdv(r.id, { statut: "ANNULE" }); pushToast({ title: "RDV annulé", tone: "danger" }); }}
+                          className="h-8 w-8 grid place-items-center rounded-md hover:bg-danger-soft text-danger cursor-pointer transition-colors"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Link href={`/consultations/nouveau?patient=${p.id}&rdv=${r.id}`}>
-                        <Button size="sm" variant="dark" leftIcon={<Stethoscope className="h-3.5 w-3.5" />}>Consulter</Button>
+                    <div className="mt-2.5 flex items-center gap-1.5 sm:hidden">
+                      <Link href={`/consultations/nouveau?patient=${p.id}&rdv=${r.id}`} className="flex-1 min-w-0">
+                        <Button size="sm" variant="dark" fullWidth leftIcon={<Stethoscope className="h-3.5 w-3.5" />}>Consulter</Button>
                       </Link>
                       <button
                         aria-label="Marquer absent"
                         title="Marquer absent"
                         onClick={() => { updateRdv(r.id, { statut: "ABSENT" }); pushToast({ title: "Marqué comme absent", tone: "warning" }); }}
-                        className="h-8 w-8 grid place-items-center rounded-md hover:bg-warning-soft text-warning cursor-pointer transition-colors"
+                        className="h-8 w-8 shrink-0 grid place-items-center rounded-md border border-line hover:bg-warning-soft hover:border-warning-soft text-warning cursor-pointer transition-colors"
                       >
                         <User2 className="h-3.5 w-3.5" />
                       </button>
@@ -65,7 +88,7 @@ export default function SalleAttentePage() {
                         aria-label="Annuler"
                         title="Annuler le RDV"
                         onClick={() => { updateRdv(r.id, { statut: "ANNULE" }); pushToast({ title: "RDV annulé", tone: "danger" }); }}
-                        className="h-8 w-8 grid place-items-center rounded-md hover:bg-danger-soft text-danger cursor-pointer transition-colors"
+                        className="h-8 w-8 shrink-0 grid place-items-center rounded-md border border-line hover:bg-danger-soft hover:border-danger-soft text-danger cursor-pointer transition-colors"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -90,7 +113,7 @@ export default function SalleAttentePage() {
                 const p = patients.find((x) => x.id === r.patient_id);
                 if (!p) return null;
                 return (
-                  <div key={r.id} className="px-4 py-2.5 flex items-center gap-3">
+                  <div key={r.id} className="px-3 sm:px-4 py-2.5 flex items-center gap-2.5 sm:gap-3">
                     <div className="h-8 w-8 rounded-md bg-success-soft text-[#0f7a48] grid place-items-center shrink-0">
                       <Check className="h-3.5 w-3.5" />
                     </div>
@@ -98,7 +121,7 @@ export default function SalleAttentePage() {
                       <div className="text-[13px] font-medium text-ink-900 truncate">{p.prenom} {p.nom}</div>
                       <div className="text-[11px] text-ink-500 truncate tabular">{r.heure} · {r.motif}</div>
                     </div>
-                    <Link href={`/patients/${p.id}`} className="text-[11px] text-brand-700 hover:text-brand-800 font-medium cursor-pointer">Dossier</Link>
+                    <Link href={`/patients/${p.id}`} className="shrink-0 text-[11px] text-brand-700 hover:text-brand-800 font-medium cursor-pointer">Dossier</Link>
                   </div>
                 );
               })}

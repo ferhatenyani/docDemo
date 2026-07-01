@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useApp } from "@/lib/store";
 import { t } from "@/lib/i18n";
+import { ALLOWED_NAV_KEYS } from "@/lib/permissions";
 
 interface NavGroup {
   label: string;
@@ -50,35 +51,41 @@ const NAV: readonly NavGroup[] = [
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const locale = useApp((s) => s.locale);
+  const role = useApp((s) => s.role);
+  const allowed = ALLOWED_NAV_KEYS[role];
 
   return (
     <nav className="flex-1 min-h-0 overflow-auto px-3 pb-3">
-      {NAV.map((group) => (
-        <div key={group.label} className="pt-4 first:pt-2">
-          <div className="eyebrow px-2 pb-1.5">{group.label}</div>
-          <div className="space-y-0.5">
-            {group.items.map(({ href, key, icon: Icon }) => {
-              const active = pathname === href || pathname?.startsWith(href + "/");
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={onNavigate}
-                  className={clsx(
-                    "group flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[13px] font-medium transition-colors duration-150",
-                    active
-                      ? "bg-ink-900 text-white"
-                      : "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
-                  )}
-                >
-                  <Icon className={clsx("h-4 w-4 shrink-0", active ? "text-white" : "text-ink-400 group-hover:text-ink-700")} />
-                  <span className="truncate">{t(locale, key)}</span>
-                </Link>
-              );
-            })}
+      {NAV.map((group) => {
+        const items = group.items.filter((it) => allowed.has(it.key));
+        if (items.length === 0) return null;
+        return (
+          <div key={group.label} className="pt-4 first:pt-2">
+            <div className="eyebrow px-2 pb-1.5">{group.label}</div>
+            <div className="space-y-0.5">
+              {items.map(({ href, key, icon: Icon }) => {
+                const active = pathname === href || pathname?.startsWith(href + "/");
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={onNavigate}
+                    className={clsx(
+                      "group flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[13px] font-medium transition-colors duration-150",
+                      active
+                        ? "bg-ink-900 text-white"
+                        : "text-ink-600 hover:bg-ink-100 hover:text-ink-900",
+                    )}
+                  >
+                    <Icon className={clsx("h-4 w-4 shrink-0", active ? "text-white" : "text-ink-400 group-hover:text-ink-700")} />
+                    <span className="truncate">{t(locale, key)}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </nav>
   );
 }

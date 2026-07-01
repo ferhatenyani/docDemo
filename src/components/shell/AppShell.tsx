@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Sidebar, MobileNavDrawer } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { Toaster } from "@/components/ui/Toaster";
 import { useApp } from "@/lib/store";
+import { isPathAllowed, landingPathForRole } from "@/lib/permissions";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const locale = useApp((s) => s.locale);
+  const role = useApp((s) => s.role);
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -20,6 +23,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [locale]);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname) return;
+    if (!isPathAllowed(role, pathname)) {
+      router.replace(landingPathForRole(role));
+    }
+  }, [role, pathname, router]);
 
   return (
     <div className="min-h-dvh bg-surface-muted text-ink-900">

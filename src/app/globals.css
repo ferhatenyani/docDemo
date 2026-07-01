@@ -47,6 +47,7 @@ html, body {
   color: var(--ink-900);
   overscroll-behavior-y: none;
   letter-spacing: -0.005em;
+  overflow-x: hidden;
 }
 
 body {
