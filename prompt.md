@@ -6,6 +6,7 @@ Build a complete **medical practice management system** ("système de gestion") 
 - **Language:** Primary UI in **French**, with full **Arabic** support and an RTL toggle.
 - **Currency:** All amounts in **Algerian Dinar (DA / DZD)**.
 - **Roles & access:** Médecin, Secrétaire/Accueil, Administrateur — each with appropriate permissions.
+- **Non negotiable:** Mobile first design and full responsiveness down to the smallest screen sizes 320px and up to the largest monitors
 
 ## Features
 
