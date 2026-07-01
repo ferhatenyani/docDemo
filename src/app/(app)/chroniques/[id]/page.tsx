@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ChevronLeft, HeartPulse, Plus, Save } from "lucide-react";
 import { useApp, formatDate, ageFromDob } from "@/lib/store";
-import { SectionHeader, Card, Badge, EmptyState, Avatar } from "@/components/ui/misc";
+import { Card, Badge, EmptyState, Avatar } from "@/components/ui/misc";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Field, Input, Textarea } from "@/components/ui/Input";
@@ -43,6 +43,7 @@ export default function ChroniqueDetailPage() {
     }));
 
   function submit() {
+    if (!p) return;
     if (!f.date) { pushToast({ title: "Date requise", tone: "warning" }); return; }
     const taille = p.chronique_hta || p.chronique_diabete ? 170 : undefined;
     const poids = Number(f.poids_kg || 0);
