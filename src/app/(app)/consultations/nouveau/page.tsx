@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Save, X, Plus } from "lucide-react";
 import { useApp } from "@/lib/store";
@@ -11,6 +11,14 @@ import { Field, Input, Textarea } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 
 export default function NouvelleConsultationPage() {
+  return (
+    <Suspense fallback={null}>
+      <NouvelleConsultationPageInner />
+    </Suspense>
+  );
+}
+
+function NouvelleConsultationPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const patientPrefill = params.get("patient") ?? "";

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Save } from "lucide-react";
 import { useApp } from "@/lib/store";
@@ -30,6 +30,14 @@ const STATUT_OPTS: { value: StatutExamen; label: string }[] = [
 ];
 
 export default function NouvelExamenPage() {
+  return (
+    <Suspense fallback={null}>
+      <NouvelExamenPageInner />
+    </Suspense>
+  );
+}
+
+function NouvelExamenPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const { patients, utilisateurs, addExamen, pushToast } = useApp();

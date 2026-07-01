@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Plus, CalendarClock, ChevronLeft, ChevronRight, Users, Check, X, User2,
@@ -24,6 +24,14 @@ function statutLabel(s: StatutRDV) {
 }
 
 export default function RendezVousPage() {
+  return (
+    <Suspense fallback={null}>
+      <RendezVousPageInner />
+    </Suspense>
+  );
+}
+
+function RendezVousPageInner() {
   const searchParams = useSearchParams();
   const {
     rendezVous, patients, utilisateurs, updateRdv,

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Save } from "lucide-react";
 import { useApp } from "@/lib/store";
@@ -41,6 +41,14 @@ function templateFor(type: TypeCertificat, patientNom: string, prenomMed: string
 }
 
 export default function NouveauCertificatPage() {
+  return (
+    <Suspense fallback={null}>
+      <NouveauCertificatPageInner />
+    </Suspense>
+  );
+}
+
+function NouveauCertificatPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const { patients, utilisateurs, addCertificat, pushToast } = useApp();

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Plus, X, Save, AlertTriangle, Search } from "lucide-react";
 import { useApp } from "@/lib/store";
@@ -12,6 +12,14 @@ import { Select } from "@/components/ui/Select";
 import type { LignePrescription, Medicament } from "@/lib/types";
 
 export default function NouvelleOrdonnancePage() {
+  return (
+    <Suspense fallback={null}>
+      <NouvelleOrdonnancePageInner />
+    </Suspense>
+  );
+}
+
+function NouvelleOrdonnancePageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const {

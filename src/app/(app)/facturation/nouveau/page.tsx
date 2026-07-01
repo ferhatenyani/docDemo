@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Save, X, Plus, Search } from "lucide-react";
 import { useApp, formatDA } from "@/lib/store";
@@ -13,6 +13,14 @@ import { DatePicker } from "@/components/ui/DatePicker";
 import type { LigneFacture } from "@/lib/types";
 
 export default function NouvelleFacturePage() {
+  return (
+    <Suspense fallback={null}>
+      <NouvelleFacturePageInner />
+    </Suspense>
+  );
+}
+
+function NouvelleFacturePageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const {

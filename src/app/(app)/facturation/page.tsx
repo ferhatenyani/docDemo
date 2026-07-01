@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus, ReceiptText, Search, Settings2, ChevronRight } from "lucide-react";
 import { useApp, formatDA, formatDate } from "@/lib/store";
@@ -18,6 +18,14 @@ function statutLabel(s: StatutFacture) {
 }
 
 export default function FacturationPage() {
+  return (
+    <Suspense fallback={null}>
+      <FacturationPageInner />
+    </Suspense>
+  );
+}
+
+function FacturationPageInner() {
   const params = useSearchParams();
   const { factures, patients } = useApp();
   const [q, setQ] = useState("");
