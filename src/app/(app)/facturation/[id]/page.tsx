@@ -44,6 +44,7 @@ export default function FactureDetailPage() {
   const facturePaiements = paiements.filter((x) => x.facture_id === f.id);
 
   function pay() {
+    if (!f) return;
     const amt = Number(amount || 0);
     if (!amt || amt <= 0) { pushToast({ title: "Montant invalide", tone: "warning" }); return; }
     if (amt > reste) { pushToast({ title: "Montant supérieur au reste dû", tone: "warning" }); return; }
