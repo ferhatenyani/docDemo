@@ -5,6 +5,7 @@ import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Save, X, Plus } from "lucide-react";
 import { useApp } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 import { SectionHeader, Card, Badge } from "@/components/ui/misc";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Textarea } from "@/components/ui/Input";
@@ -21,6 +22,7 @@ export default function NouvelleConsultationPage() {
 function NouvelleConsultationPageInner() {
   const router = useRouter();
   const params = useSearchParams();
+  const t = useT();
   const patientPrefill = params.get("patient") ?? "";
   const rdvPrefill = params.get("rdv") ?? undefined;
   const {
@@ -63,7 +65,7 @@ function NouvelleConsultationPageInner() {
 
   function submit() {
     if (!f.patient_id || !f.medecin_id || !f.motif.trim() || !f.diagnostic.trim()) {
-      pushToast({ title: "Champs obligatoires manquants", description: "Patient, médecin, motif et diagnostic.", tone: "warning" });
+      pushToast({ title: t("required_fields_missing"), description: t("required_fields_cons_desc"), tone: "warning" });
       return;
     }
     const created = addConsultation({
@@ -83,53 +85,53 @@ function NouvelleConsultationPageInner() {
       },
     });
     if (rdvPrefill) updateRdv(rdvPrefill, { statut: "TERMINE" });
-    pushToast({ title: "Consultation enregistrée", tone: "success" });
+    pushToast({ title: t("consultation_saved"), tone: "success" });
     router.push(`/consultations/${created.id}`);
   }
 
   return (
     <div className="space-y-4">
       <Link href={patientPrefill ? `/patients/${patientPrefill}` : "/consultations"} className="inline-flex items-center gap-1 text-[13px] text-ink-500 hover:text-ink-800 cursor-pointer">
-        <ChevronLeft className="h-4 w-4" /> {patientPrefill ? "Fiche patient" : "Consultations"}
+        <ChevronLeft className="dir-icon h-4 w-4" /> {patientPrefill ? t("patient_detail") : t("consultations_title")}
       </Link>
-      <SectionHeader title="Nouvelle consultation" description={patient ? `Pour ${patient.prenom} ${patient.nom}` : undefined} />
+      <SectionHeader title={t("new_consultation_btn")} description={patient ? `${t("for_patient")} ${patient.prenom} ${patient.nom}` : undefined} />
 
       <div className="grid lg:grid-cols-3 gap-4">
         <Card padding="md" className="lg:col-span-2 space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Patient" required>
+            <Field label={t("patient")} required>
               <Select
                 value={f.patient_id}
                 onChange={(v) => setF({ ...f, patient_id: v })}
                 options={patients.map((p) => ({ value: p.id, label: `${p.prenom} ${p.nom}`, hint: p.code }))}
               />
             </Field>
-            <Field label="Médecin" required>
+            <Field label={t("doctor")} required>
               <Select
                 value={f.medecin_id}
                 onChange={(v) => setF({ ...f, medecin_id: v })}
                 options={utilisateurs.filter((u) => u.role === "MEDECIN").map((u) => ({ value: u.id, label: `Dr. ${u.prenom} ${u.nom}` }))}
               />
             </Field>
-            <Field label="Motif" required className="sm:col-span-2">
-              <Input value={f.motif} onChange={(e) => setF({ ...f, motif: e.target.value })} placeholder="Ex: Céphalées depuis 3 jours" />
+            <Field label={t("cons_motif")} required className="sm:col-span-2">
+              <Input value={f.motif} onChange={(e) => setF({ ...f, motif: e.target.value })} placeholder={t("cons_motif_placeholder")} />
             </Field>
-            <Field label="Symptômes" className="sm:col-span-2">
-              <Textarea value={f.symptomes} onChange={(e) => setF({ ...f, symptomes: e.target.value })} rows={3} placeholder="Décrire les symptômes rapportés par le patient." />
+            <Field label={t("symptomes")} className="sm:col-span-2">
+              <Textarea value={f.symptomes} onChange={(e) => setF({ ...f, symptomes: e.target.value })} rows={3} placeholder={t("symptomes_placeholder")} />
             </Field>
-            <Field label="Examen clinique" className="sm:col-span-2">
-              <Textarea value={f.examen_clinique} onChange={(e) => setF({ ...f, examen_clinique: e.target.value })} rows={3} placeholder="Auscultation, palpation, tension, etc." />
+            <Field label={t("cons_examen")} className="sm:col-span-2">
+              <Textarea value={f.examen_clinique} onChange={(e) => setF({ ...f, examen_clinique: e.target.value })} rows={3} placeholder={t("cons_examen_placeholder")} />
             </Field>
-            <Field label="Diagnostic" required className="sm:col-span-2">
-              <Textarea value={f.diagnostic} onChange={(e) => setF({ ...f, diagnostic: e.target.value })} rows={2} placeholder="Diagnostic clinique et différentiel." />
+            <Field label={t("cons_diagnostic")} required className="sm:col-span-2">
+              <Textarea value={f.diagnostic} onChange={(e) => setF({ ...f, diagnostic: e.target.value })} rows={2} placeholder={t("cons_diagnostic_placeholder")} />
             </Field>
-            <Field label="Notes" className="sm:col-span-2">
-              <Textarea value={f.notes} onChange={(e) => setF({ ...f, notes: e.target.value })} rows={3} placeholder="Recommandations, suite à donner…" />
+            <Field label={t("notes")} className="sm:col-span-2">
+              <Textarea value={f.notes} onChange={(e) => setF({ ...f, notes: e.target.value })} rows={3} placeholder={t("cons_notes_placeholder")} />
             </Field>
           </div>
 
           <div>
-            <div className="text-[13px] font-semibold text-ink-800 mb-2">Codes CIM-10</div>
+            <div className="text-[13px] font-semibold text-ink-800 mb-2">{t("cim10_codes")}</div>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {codes.map((c) => {
                 const info = cim10.find((x) => x.code === c);
@@ -140,7 +142,7 @@ function NouvelleConsultationPageInner() {
                       type="button"
                       onClick={() => setCodes(codes.filter((x) => x !== c))}
                       className="ms-1 hover:bg-brand-100 rounded-full h-4 w-4 grid place-items-center cursor-pointer"
-                      aria-label={`Retirer ${c}`}
+                      aria-label={`${t("remove")} ${c}`}
                     ><X className="h-3 w-3" /></button>
                     <span className="ms-1 truncate max-w-[220px]">{info?.libelle}</span>
                   </Badge>
@@ -150,7 +152,7 @@ function NouvelleConsultationPageInner() {
             <Input
               value={cimQ}
               onChange={(e) => setCimQ(e.target.value)}
-              placeholder="Rechercher un code ou libellé CIM-10…"
+              placeholder={t("search_cim10_placeholder")}
             />
             <div className="mt-2 grid sm:grid-cols-2 gap-1.5">
               {cimSuggestions.map((c) => (
@@ -158,10 +160,10 @@ function NouvelleConsultationPageInner() {
                   key={c.code}
                   type="button"
                   onClick={() => { if (!codes.includes(c.code)) setCodes([...codes, c.code]); }}
-                  className="flex items-center gap-2 rounded-lg border border-line px-2.5 py-1.5 text-left hover:bg-ink-50 cursor-pointer"
+                  className="flex items-center gap-2 rounded-lg border border-line px-2.5 py-1.5 text-left hover:bg-ink-50 cursor-pointer min-w-0"
                 >
                   <Badge tone="brand" size="sm"><span className="tabular">{c.code}</span></Badge>
-                  <span className="text-[12px] text-ink-700 truncate">{c.libelle}</span>
+                  <span className="text-[12px] text-ink-700 truncate min-w-0">{c.libelle}</span>
                   <Plus className="h-3.5 w-3.5 text-brand-500 ms-auto shrink-0" />
                 </button>
               ))}
@@ -170,52 +172,52 @@ function NouvelleConsultationPageInner() {
         </Card>
 
         <Card padding="md" className="space-y-3">
-          <div className="text-[13px] font-semibold text-ink-800">Signes vitaux</div>
+          <div className="text-[13px] font-semibold text-ink-800">{t("vital_signs")}</div>
 
           <div className="grid grid-cols-2 gap-2">
-            <Field label="TA sys (mmHg)">
+            <Field label={t("ta_sys_label")}>
               <Input inputMode="numeric" value={String(vitals.tension_systolique)} onChange={(e) => setVitals({ ...vitals, tension_systolique: e.target.value as any })} />
             </Field>
-            <Field label="TA dia (mmHg)">
+            <Field label={t("ta_dia_label")}>
               <Input inputMode="numeric" value={String(vitals.tension_diastolique)} onChange={(e) => setVitals({ ...vitals, tension_diastolique: e.target.value as any })} />
             </Field>
-            <Field label="Temp (°C)">
+            <Field label={t("temp_label")}>
               <Input inputMode="decimal" value={String(vitals.temperature)} onChange={(e) => setVitals({ ...vitals, temperature: e.target.value as any })} />
             </Field>
-            <Field label="FC (bpm)">
+            <Field label={t("fc_label")}>
               <Input inputMode="numeric" value={String(vitals.frequence_cardiaque)} onChange={(e) => setVitals({ ...vitals, frequence_cardiaque: e.target.value as any })} />
             </Field>
-            <Field label="Poids (kg)">
+            <Field label={t("weight_label")}>
               <Input inputMode="decimal" value={String(vitals.poids_kg)} onChange={(e) => setVitals({ ...vitals, poids_kg: e.target.value as any })} />
             </Field>
-            <Field label="Taille (cm)">
+            <Field label={t("height_label")}>
               <Input inputMode="numeric" value={String(vitals.taille_cm)} onChange={(e) => setVitals({ ...vitals, taille_cm: e.target.value as any })} />
             </Field>
-            <Field label="Glycémie (g/L)">
+            <Field label={t("glycemie_label")}>
               <Input inputMode="decimal" value={String(vitals.glycemie)} onChange={(e) => setVitals({ ...vitals, glycemie: e.target.value as any })} />
             </Field>
-            <Field label="SpO₂ (%)">
+            <Field label={t("spo2_label")}>
               <Input inputMode="numeric" value={String(vitals.saturation)} onChange={(e) => setVitals({ ...vitals, saturation: e.target.value as any })} />
             </Field>
           </div>
           {imc !== null && !isNaN(imc) && (
             <div className="rounded-xl bg-brand-50 border border-brand-100 p-3 flex items-center justify-between">
-              <div>
-                <div className="text-[11px] text-brand-700 font-semibold uppercase tracking-wide">IMC calculé</div>
+              <div className="min-w-0">
+                <div className="text-[11px] text-brand-700 font-semibold uppercase tracking-wide">{t("imc_calculated")}</div>
                 <div className="text-[20px] font-semibold text-brand-800 tabular">{imc.toFixed(1)}</div>
               </div>
               <Badge tone={imc < 18.5 ? "info" : imc < 25 ? "success" : imc < 30 ? "warning" : "danger"}>
-                {imc < 18.5 ? "Insuffisance" : imc < 25 ? "Normal" : imc < 30 ? "Surpoids" : "Obésité"}
+                {imc < 18.5 ? t("imc_underweight") : imc < 25 ? t("imc_normal") : imc < 30 ? t("imc_overweight") : t("imc_obese")}
               </Badge>
             </div>
           )}
 
           {patient && (patient.allergies.length > 0 || patient.maladies_chroniques.length > 0) && (
             <div className="rounded-xl border border-line p-3 space-y-2">
-              <div className="text-[11px] uppercase text-ink-500 font-semibold tracking-wide">Alertes patient</div>
+              <div className="text-[11px] uppercase text-ink-500 font-semibold tracking-wide">{t("patient_alerts")}</div>
               {patient.allergies.length > 0 && (
                 <div>
-                  <div className="text-[12px] text-ink-700 font-medium">Allergies:</div>
+                  <div className="text-[12px] text-ink-700 font-medium">{t("allergies")}:</div>
                   <div className="flex flex-wrap gap-1 mt-0.5">
                     {patient.allergies.map((a) => <Badge key={a} tone="danger" size="sm">{a}</Badge>)}
                   </div>
@@ -223,7 +225,7 @@ function NouvelleConsultationPageInner() {
               )}
               {patient.maladies_chroniques.length > 0 && (
                 <div>
-                  <div className="text-[12px] text-ink-700 font-medium">Chronique:</div>
+                  <div className="text-[12px] text-ink-700 font-medium">{t("chronic")}:</div>
                   <div className="flex flex-wrap gap-1 mt-0.5">
                     {patient.maladies_chroniques.map((m) => <Badge key={m} tone="warning" size="sm">{m}</Badge>)}
                   </div>
@@ -235,8 +237,8 @@ function NouvelleConsultationPageInner() {
       </div>
 
       <div className="sticky bottom-0 bg-surface-muted/90 backdrop-blur-sm py-3 flex items-center justify-end gap-2">
-        <Button variant="ghost" onClick={() => router.back()}>Annuler</Button>
-        <Button variant="primary" leftIcon={<Save className="h-4 w-4" />} onClick={submit}>Enregistrer la consultation</Button>
+        <Button variant="ghost" onClick={() => router.back()}>{t("cancel")}</Button>
+        <Button variant="primary" leftIcon={<Save className="h-4 w-4" />} onClick={submit}>{t("save_consultation")}</Button>
       </div>
     </div>
   );

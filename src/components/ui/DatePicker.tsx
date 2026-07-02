@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { CalendarDays, ChevronDown } from "lucide-react";
 import { Calendar } from "./Calendar";
+import { useLocale, useT } from "@/lib/i18n";
 
 interface Props {
   value?: string;
@@ -23,7 +24,11 @@ function displayFormat(d: string, locale: "fr" | "ar"): string {
   }).format(date);
 }
 
-export function DatePicker({ value, onChange, placeholder = "Choisir une date", className, minDate, locale = "fr", disabled }: Props) {
+export function DatePicker({ value, onChange, placeholder, className, minDate, locale, disabled }: Props) {
+  const t = useT();
+  const storeLocale = useLocale();
+  const loc = locale ?? storeLocale;
+  const ph = placeholder ?? t("choose") + " " + t("date").toLowerCase();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
 
@@ -54,7 +59,7 @@ export function DatePicker({ value, onChange, placeholder = "Choisir une date", 
       >
         <CalendarDays className="h-3.5 w-3.5 text-ink-400 shrink-0" />
         <span className={clsx("flex-1 text-[13px] truncate tracking-crisp", value ? "text-ink-900" : "text-ink-400")}>
-          {value ? displayFormat(value, locale) : placeholder}
+          {value ? displayFormat(value, loc) : ph}
         </span>
         <ChevronDown className={clsx("h-3.5 w-3.5 text-ink-400 transition-transform shrink-0", open && "rotate-180")} />
       </button>
@@ -64,7 +69,7 @@ export function DatePicker({ value, onChange, placeholder = "Choisir une date", 
             value={value}
             onChange={(d) => { onChange(d); setOpen(false); }}
             minDate={minDate}
-            locale={locale}
+            locale={loc}
             className="shadow-overlay"
           />
         </div>

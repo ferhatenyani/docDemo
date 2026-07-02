@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import clsx from "clsx";
 import { ChevronDown, Check } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 export interface SelectOption<T extends string = string> {
   value: T;
@@ -26,12 +27,14 @@ export function Select<T extends string>({
   value,
   onChange,
   options,
-  placeholder = "Sélectionner…",
+  placeholder,
   leftIcon,
   className,
   disabled,
   invalid,
 }: Props<T>) {
+  const tt = useT();
+  const ph = placeholder ?? tt("select") + "…";
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -83,7 +86,7 @@ export function Select<T extends string>({
       >
         {leftIcon && <span className="text-ink-400 shrink-0">{leftIcon}</span>}
         <span className={clsx("flex-1 text-[13px] truncate tracking-crisp", selected ? "text-ink-900" : "text-ink-400")}>
-          {selected ? selected.label : placeholder}
+          {selected ? selected.label : ph}
         </span>
         <ChevronDown className={clsx("h-3.5 w-3.5 text-ink-400 transition-transform shrink-0", open && "rotate-180")} />
       </button>
@@ -95,7 +98,7 @@ export function Select<T extends string>({
           className="absolute z-50 mt-1 w-full max-h-64 overflow-auto rounded-md bg-white border border-line shadow-overlay py-1 animate-popIn"
         >
           {options.length === 0 && (
-            <div className="px-3 py-2 text-[12px] text-ink-400">Aucune option</div>
+            <div className="px-3 py-2 text-[12px] text-ink-400">{tt("no_results")}</div>
           )}
           {options.map((o, i) => {
             const isSelected = o.value === value;

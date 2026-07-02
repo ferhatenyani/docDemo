@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
 import { X } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   open: boolean;
@@ -20,6 +21,7 @@ export function Modal({
   open, onClose, title, description, children, footer,
   size = "md", hideClose,
 }: Props) {
+  const t = useT();
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -72,8 +74,8 @@ export function Modal({
             {!hideClose && (
               <button
                 onClick={onClose}
-                aria-label="Fermer"
-                className="h-8 w-8 grid place-items-center rounded-md text-ink-500 hover:bg-ink-100 hover:text-ink-800 cursor-pointer transition-colors -mr-1"
+                aria-label={t("close")}
+                className="h-8 w-8 grid place-items-center rounded-md text-ink-500 hover:bg-ink-100 hover:text-ink-800 cursor-pointer transition-colors -me-1"
               >
                 <X className="h-4 w-4" />
               </button>

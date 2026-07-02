@@ -9,12 +9,15 @@ import {
   CalendarClock, Plus,
 } from "lucide-react";
 import { useApp, ageFromDob, formatDate, formatDA } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 import { SectionHeader, Card, Badge, Avatar, EmptyState } from "@/components/ui/misc";
 import { Button } from "@/components/ui/Button";
 import { Tabs } from "@/components/ui/Tabs";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 
 export default function PatientDetailPage() {
+  const t = useT();
+  const locale = t.locale;
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const {
@@ -31,9 +34,9 @@ export default function PatientDetailPage() {
       <Card padding="md">
         <EmptyState
           icon={<User2 className="h-6 w-6" />}
-          title="Patient introuvable"
-          description="Ce dossier n'existe pas ou a été supprimé."
-          action={<Link href="/patients"><Button variant="primary">Retour aux patients</Button></Link>}
+          title={t("patient_not_found")}
+          description={t("patient_not_found_desc")}
+          action={<Link href="/patients"><Button variant="primary">{t("back_to_patients")}</Button></Link>}
         />
       </Card>
     );
@@ -48,21 +51,41 @@ export default function PatientDetailPage() {
   const patientReleves = relevesChroniques.filter((r) => r.patient_id === p.id);
 
   const tabs = [
-    { key: "apercu", label: "Aperçu" },
-    { key: "consultations", label: "Consultations", count: patientConsultations.length },
-    { key: "ordonnances", label: "Ordonnances", count: patientOrdonnances.length },
-    { key: "examens", label: "Examens", count: patientExamens.length },
-    { key: "certificats", label: "Certificats", count: patientCertificats.length },
-    { key: "factures", label: "Factures", count: patientFactures.length },
-    { key: "rdv", label: "RDV", count: patientRdv.length },
+    { key: "apercu", label: t("overview") },
+    { key: "consultations", label: t("consultations_title"), count: patientConsultations.length },
+    { key: "ordonnances", label: t("ordonnances_title"), count: patientOrdonnances.length },
+    { key: "examens", label: t("examens_title"), count: patientExamens.length },
+    { key: "certificats", label: t("certificats_title"), count: patientCertificats.length },
+    { key: "factures", label: t("factures"), count: patientFactures.length },
+    { key: "rdv", label: t("nav_rdv"), count: patientRdv.length },
   ];
+
+  const assuranceLabel = (a: string) => {
+    switch (a) {
+      case "CNAS": return t("ins_cnas");
+      case "CASNOS": return t("ins_casnos");
+      case "ASSURE": return t("ins_assure");
+      case "AYANT_DROIT": return t("ins_ayant_droit");
+      case "NON_ASSURE": return t("ins_non_assure");
+      default: return a;
+    }
+  };
+
+  const factureStatusLabel = (s: string) => {
+    switch (s) {
+      case "PAYE": return t("status_paid");
+      case "PARTIEL": return t("status_partial");
+      case "IMPAYE": return t("status_unpaid");
+      default: return t("status_cancelled");
+    }
+  };
 
   const chronic = p.chronique_diabete || p.chronique_hta;
 
   return (
     <div className="space-y-4">
       <Link href="/patients" className="inline-flex items-center gap-1 text-[13px] text-ink-500 hover:text-ink-800 cursor-pointer">
-        <ChevronLeft className="h-4 w-4" /> Patients
+        <ChevronLeft className="dir-icon h-4 w-4" /> {t("patients_title")}
       </Link>
 
       {/* Header card */}
@@ -73,10 +96,10 @@ export default function PatientDetailPage() {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-[22px] sm:text-[26px] font-semibold text-ink-900">{p.prenom} {p.nom}</h1>
               <Badge tone="info" size="sm">{p.code}</Badge>
-              {p.groupe_sanguin && <Badge tone="danger" size="sm">Groupe {p.groupe_sanguin}</Badge>}
+              {p.groupe_sanguin && <Badge tone="danger" size="sm">{t("blood_group")} {p.groupe_sanguin}</Badge>}
             </div>
             <div className="text-[13px] text-ink-500 mt-1 flex flex-wrap gap-x-4 gap-y-1">
-              <span className="inline-flex items-center gap-1"><Cake className="h-3.5 w-3.5" /> {ageFromDob(p.date_naissance)} ans • {p.sexe === "M" ? "Homme" : "Femme"}</span>
+              <span className="inline-flex items-center gap-1"><Cake className="h-3.5 w-3.5" /> {ageFromDob(p.date_naissance)} {t("age_years")} • {p.sexe === "M" ? t("sex_male") : t("sex_female")}</span>
               <span className="inline-flex items-center gap-1"><Phone className="h-3.5 w-3.5" /> <span className="tabular">{p.telephone}</span></span>
               {p.email && <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> {p.email}</span>}
               <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> {p.commune}, {p.wilaya}</span>
@@ -84,26 +107,26 @@ export default function PatientDetailPage() {
           </div>
           <div className="flex flex-wrap items-center gap-2 shrink-0">
             <Link href={`/consultations/nouveau?patient=${p.id}`}>
-              <Button variant="primary" leftIcon={<Stethoscope className="h-4 w-4" />}>Consultation</Button>
+              <Button variant="primary" leftIcon={<Stethoscope className="h-4 w-4" />}>{t("consultation")}</Button>
             </Link>
             <Link href={`/patients/${p.id}/modifier`}>
-              <Button variant="secondary" leftIcon={<Pencil className="h-4 w-4" />}>Modifier</Button>
+              <Button variant="secondary" leftIcon={<Pencil className="h-4 w-4" />}>{t("modify")}</Button>
             </Link>
-            <Button variant="ghost" leftIcon={<Trash2 className="h-4 w-4 text-danger" />} onClick={() => setConfirmDelete(true)}>Supprimer</Button>
+            <Button variant="ghost" leftIcon={<Trash2 className="h-4 w-4 text-danger" />} onClick={() => setConfirmDelete(true)}>{t("delete")}</Button>
           </div>
         </div>
 
         {chronic && (
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="text-[12px] text-ink-500">Chronique:</span>
+            <span className="text-[12px] text-ink-500">{t("chronic")}:</span>
             {p.chronique_diabete && (
               <Link href={`/chroniques/${p.id}`}>
-                <Badge tone="warning" size="sm">Diabète — suivi</Badge>
+                <Badge tone="warning" size="sm">{t("diabete")} — {t("followup")}</Badge>
               </Link>
             )}
             {p.chronique_hta && (
               <Link href={`/chroniques/${p.id}`}>
-                <Badge tone="danger" size="sm">HTA — suivi</Badge>
+                <Badge tone="danger" size="sm">{t("hta")} — {t("followup")}</Badge>
               </Link>
             )}
           </div>
@@ -111,7 +134,7 @@ export default function PatientDetailPage() {
 
         {p.allergies.length > 0 && (
           <div className="mt-3 rounded-xl bg-red-50 border border-red-100 px-3 py-2 flex items-center gap-2">
-            <span className="text-[12px] font-semibold text-red-700">Allergies:</span>
+            <span className="text-[12px] font-semibold text-red-700">{t("allergies")}:</span>
             <div className="flex flex-wrap gap-1">
               {p.allergies.map((a) => <Badge key={a} tone="danger" size="sm">{a}</Badge>)}
             </div>
@@ -125,27 +148,27 @@ export default function PatientDetailPage() {
         <div className="grid lg:grid-cols-3 gap-4">
           <Card padding="md" className="lg:col-span-2 space-y-4">
             <div>
-              <div className="text-[13px] font-semibold text-ink-800 mb-1">Antécédents</div>
+              <div className="text-[13px] font-semibold text-ink-800 mb-1">{t("antecedents")}</div>
               {p.antecedents.length === 0
-                ? <div className="text-[13px] text-ink-500">Aucun antécédent renseigné.</div>
+                ? <div className="text-[13px] text-ink-500">{t("no_antecedents")}</div>
                 : <ul className="text-[13px] text-ink-800 list-disc ps-5 space-y-0.5">
                     {p.antecedents.map((a, i) => <li key={i}>{a}</li>)}
                   </ul>
               }
             </div>
             <div>
-              <div className="text-[13px] font-semibold text-ink-800 mb-1">Traitements en cours</div>
+              <div className="text-[13px] font-semibold text-ink-800 mb-1">{t("current_treatments")}</div>
               {p.traitements_en_cours.length === 0
-                ? <div className="text-[13px] text-ink-500">Aucun traitement en cours.</div>
+                ? <div className="text-[13px] text-ink-500">{t("no_current_treatment")}</div>
                 : <ul className="text-[13px] text-ink-800 list-disc ps-5 space-y-0.5">
                     {p.traitements_en_cours.map((a, i) => <li key={i}>{a}</li>)}
                   </ul>
               }
             </div>
             <div>
-              <div className="text-[13px] font-semibold text-ink-800 mb-1">Maladies chroniques</div>
+              <div className="text-[13px] font-semibold text-ink-800 mb-1">{t("chronic_diseases")}</div>
               {p.maladies_chroniques.length === 0
-                ? <div className="text-[13px] text-ink-500">Aucune maladie chronique.</div>
+                ? <div className="text-[13px] text-ink-500">{t("no_chronic_disease")}</div>
                 : <div className="flex flex-wrap gap-1.5">
                     {p.maladies_chroniques.map((m) => <Badge key={m} tone="brand" size="sm">{m}</Badge>)}
                   </div>
@@ -153,27 +176,28 @@ export default function PatientDetailPage() {
             </div>
             {p.notes && (
               <div>
-                <div className="text-[13px] font-semibold text-ink-800 mb-1">Notes</div>
+                <div className="text-[13px] font-semibold text-ink-800 mb-1">{t("notes")}</div>
                 <div className="text-[13px] text-ink-700 whitespace-pre-wrap">{p.notes}</div>
               </div>
             )}
           </Card>
 
           <Card padding="md" className="space-y-3">
-            <div className="text-[13px] font-semibold text-ink-800">Sécurité sociale</div>
-            <InfoRow label="Type d'assurance" value={p.type_assurance === "AYANT_DROIT" ? "Ayant droit" : p.type_assurance === "NON_ASSURE" ? "Non assuré" : p.type_assurance === "ASSURE" ? "Assuré" : p.type_assurance} />
-            <InfoRow label="N° Sécurité sociale" value={p.numero_securite_sociale || "—"} />
-            <InfoRow label="N° Carte Chifa" value={p.numero_chifa || "—"} />
-            <InfoRow label="Date de naissance" value={formatDate(p.date_naissance)} />
-            <InfoRow label="Adresse" value={`${p.adresse}, ${p.commune}, ${p.wilaya}`} />
-            <InfoRow label="Dossier créé le" value={formatDate(p.cree_le)} />
+            <div className="text-[13px] font-semibold text-ink-800">{t("social_security")}</div>
+            <InfoRow label={t("insurance_type")} value={assuranceLabel(p.type_assurance)} />
+            <InfoRow label={t("social_security_number")} value={p.numero_securite_sociale || "—"} />
+            <InfoRow label={t("chifa_card_number")} value={p.numero_chifa || "—"} />
+            <InfoRow label={t("birth_date")} value={formatDate(p.date_naissance, locale)} />
+            <InfoRow label={t("address")} value={`${p.adresse}, ${p.commune}, ${p.wilaya}`} />
+            <InfoRow label={t("record_created_on")} value={formatDate(p.cree_le, locale)} />
           </Card>
         </div>
       )}
 
       {tab === "consultations" && (
         <TimelineList
-          empty={{ icon: <Stethoscope className="h-6 w-6" />, title: "Aucune consultation", action: <Link href={`/consultations/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Nouvelle consultation</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <Stethoscope className="h-6 w-6" />, title: t("no_consultation"), action: <Link href={`/consultations/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("new_consultation_btn")}</Button></Link> }}
           items={patientConsultations.map((c) => ({
             key: c.id,
             date: c.date,
@@ -187,11 +211,12 @@ export default function PatientDetailPage() {
 
       {tab === "ordonnances" && (
         <TimelineList
-          empty={{ icon: <PillBottle className="h-6 w-6" />, title: "Aucune ordonnance", action: <Link href={`/ordonnances/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Nouvelle ordonnance</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <PillBottle className="h-6 w-6" />, title: t("no_ordonnance"), action: <Link href={`/ordonnances/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("new_ordonnance_btn")}</Button></Link> }}
           items={patientOrdonnances.map((o) => ({
             key: o.id,
             date: o.date,
-            title: `${o.lignes.length} médicaments`,
+            title: `${o.lignes.length} ${t("medicaments").toLowerCase()}`,
             subtitle: o.lignes.map((l) => l.nom).join(", "),
             href: `/ordonnances/${o.id}`,
           }))}
@@ -200,13 +225,14 @@ export default function PatientDetailPage() {
 
       {tab === "examens" && (
         <TimelineList
-          empty={{ icon: <FlaskConical className="h-6 w-6" />, title: "Aucun examen", action: <Link href={`/examens/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Demander un examen</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <FlaskConical className="h-6 w-6" />, title: t("no_examen"), action: <Link href={`/examens/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("request_examen")}</Button></Link> }}
           items={patientExamens.map((e) => ({
             key: e.id,
             date: e.date_demande,
             title: e.intitule,
             subtitle: e.laboratoire ?? e.type,
-            meta: e.statut === "RESULTAT_RECU" ? "Résultat reçu" : e.statut === "EN_ATTENTE_RESULTAT" ? "En attente de résultat" : "Prescrit",
+            meta: e.statut === "RESULTAT_RECU" ? t("result_received") : e.statut === "EN_ATTENTE_RESULTAT" ? t("awaiting_result") : t("prescribed"),
             href: `/examens/${e.id}`,
           }))}
         />
@@ -214,11 +240,12 @@ export default function PatientDetailPage() {
 
       {tab === "certificats" && (
         <TimelineList
-          empty={{ icon: <FileBadge className="h-6 w-6" />, title: "Aucun certificat", action: <Link href={`/certificats/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Nouveau certificat</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <FileBadge className="h-6 w-6" />, title: t("no_certificate"), action: <Link href={`/certificats/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("new_certificate_btn")}</Button></Link> }}
           items={patientCertificats.map((c) => ({
             key: c.id,
             date: c.date,
-            title: c.type === "ARRET_TRAVAIL" ? `Arrêt de travail (${c.duree_jours ?? "?"} j)` : c.type === "MEDICAL" ? "Certificat médical" : c.type,
+            title: c.type === "ARRET_TRAVAIL" ? `${t("cert_arret_travail")} (${c.duree_jours ?? "?"} ${t("days_short")})` : c.type === "MEDICAL" ? t("cert_medical") : c.type,
             subtitle: c.motif,
             href: `/certificats/${c.id}`,
           }))}
@@ -227,13 +254,14 @@ export default function PatientDetailPage() {
 
       {tab === "factures" && (
         <TimelineList
-          empty={{ icon: <ReceiptText className="h-6 w-6" />, title: "Aucune facture", action: <Link href={`/facturation/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Nouvelle facture</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <ReceiptText className="h-6 w-6" />, title: t("no_invoice"), action: <Link href={`/facturation/nouveau?patient=${p.id}`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("new_facture")}</Button></Link> }}
           items={patientFactures.map((f) => ({
             key: f.id,
             date: f.date,
             title: f.numero,
             subtitle: f.lignes.map((l) => l.libelle).join(", "),
-            meta: `${formatDA(f.total_da)} • ${f.statut === "PAYE" ? "Payé" : f.statut === "PARTIEL" ? "Partiel" : f.statut === "IMPAYE" ? "Impayé" : "Annulé"}`,
+            meta: `${formatDA(f.total_da)} • ${factureStatusLabel(f.statut)}`,
             href: `/facturation/${f.id}`,
           }))}
         />
@@ -241,12 +269,13 @@ export default function PatientDetailPage() {
 
       {tab === "rdv" && (
         <TimelineList
-          empty={{ icon: <CalendarClock className="h-6 w-6" />, title: "Aucun rendez-vous", action: <Link href={`/rendez-vous?patient=${p.id}&new=1`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>Nouveau RDV</Button></Link> }}
+          locale={locale}
+          empty={{ icon: <CalendarClock className="h-6 w-6" />, title: t("no_rdv"), action: <Link href={`/rendez-vous?patient=${p.id}&new=1`}><Button variant="primary" leftIcon={<Plus className="h-4 w-4" />}>{t("rdv_new")}</Button></Link> }}
           items={patientRdv.map((r) => ({
             key: r.id,
             date: r.date + "T" + r.heure,
             title: r.motif,
-            subtitle: `${r.heure} • ${r.duree_minutes} min`,
+            subtitle: `${r.heure} • ${r.duree_minutes} ${t("min_short")}`,
             meta: r.statut,
             href: `/rendez-vous`,
           }))}
@@ -256,16 +285,16 @@ export default function PatientDetailPage() {
       {tab === "apercu" && patientReleves.length > 0 && (
         <Card padding="md">
           <div className="text-[13px] font-semibold text-ink-800 mb-2 flex items-center gap-2">
-            <HeartPulse className="h-4 w-4 text-danger" /> Derniers relevés chroniques
+            <HeartPulse className="h-4 w-4 text-danger" /> {t("latest_chronic_measures")}
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {patientReleves.slice(0, 6).map((r) => (
               <div key={r.id} className="rounded-xl border border-line p-3 text-[12px]">
-                <div className="text-ink-500">{formatDate(r.date)}</div>
+                <div className="text-ink-500">{formatDate(r.date, locale)}</div>
                 <div className="tabular mt-1 space-y-0.5">
-                  {r.tension_sys && <div>TA: <span className="font-semibold">{r.tension_sys}/{r.tension_dia}</span> mmHg</div>}
-                  {r.glycemie && <div>Glycémie: <span className="font-semibold">{r.glycemie}</span> g/L</div>}
-                  {r.poids_kg && <div>Poids: <span className="font-semibold">{r.poids_kg}</span> kg</div>}
+                  {r.tension_sys && <div>{t("blood_pressure_short")}: <span className="font-semibold">{r.tension_sys}/{r.tension_dia}</span> mmHg</div>}
+                  {r.glycemie && <div>{t("glycemie")}: <span className="font-semibold">{r.glycemie}</span> g/L</div>}
+                  {r.poids_kg && <div>{t("weight")}: <span className="font-semibold">{r.poids_kg}</span> kg</div>}
                 </div>
               </div>
             ))}
@@ -275,15 +304,15 @@ export default function PatientDetailPage() {
 
       <ConfirmDialog
         open={confirmDelete}
-        title="Supprimer le patient"
-        description={`Le dossier de ${p.prenom} ${p.nom} sera supprimé. Cette action est irréversible.`}
-        confirmLabel="Supprimer"
+        title={t("delete_patient_title")}
+        description={`${t("delete_patient_desc_prefix")} ${p.prenom} ${p.nom}${t("delete_patient_desc_suffix")}`}
+        confirmLabel={t("delete")}
         destructive
         onCancel={() => setConfirmDelete(false)}
         onConfirm={() => {
           setConfirmDelete(false);
           deletePatient(p.id);
-          pushToast({ title: "Patient supprimé", tone: "danger" });
+          pushToast({ title: t("patient_deleted"), tone: "danger" });
           router.push("/patients");
         }}
       />
@@ -293,7 +322,7 @@ export default function PatientDetailPage() {
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex items-center justify-between gap-3 min-w-0">
       <span className="text-[12px] text-ink-500 shrink-0">{label}</span>
       <span className="text-[13px] font-medium text-ink-800 text-right truncate">{value}</span>
     </div>
@@ -301,7 +330,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 interface TLItem { key: string; date: string; title: string; subtitle?: string; meta?: string; href: string; }
-function TimelineList({ items, empty }: { items: TLItem[]; empty: { icon: React.ReactNode; title: string; action?: React.ReactNode } }) {
+function TimelineList({ items, empty, locale }: { items: TLItem[]; empty: { icon: React.ReactNode; title: string; action?: React.ReactNode }; locale: "fr" | "ar" }) {
   if (items.length === 0) {
     return <Card padding="md"><EmptyState {...empty} /></Card>;
   }
@@ -318,7 +347,7 @@ function TimelineList({ items, empty }: { items: TLItem[]; empty: { icon: React.
               {it.subtitle && <div className="text-[12px] text-ink-500 truncate">{it.subtitle}</div>}
             </div>
             <div className="text-right shrink-0">
-              <div className="text-[12px] text-ink-500">{formatDate(it.date)}</div>
+              <div className="text-[12px] text-ink-500">{formatDate(it.date, locale)}</div>
               {it.meta && <div className="text-[11px] text-ink-500">{it.meta}</div>}
             </div>
           </Link>

@@ -7,19 +7,32 @@ import { useApp, formatDate } from "@/lib/store";
 import { SectionHeader, Badge, Chip, EmptyState } from "@/components/ui/misc";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useT } from "@/lib/i18n";
 import type { StatutExamen } from "@/lib/types";
 
 function statutTone(s: StatutExamen) {
   return s === "RESULTAT_RECU" ? "success" : s === "EN_ATTENTE_RESULTAT" ? "warning" : "info";
 }
-function statutLabel(s: StatutExamen) {
-  return s === "RESULTAT_RECU" ? "Résultat reçu" : s === "EN_ATTENTE_RESULTAT" ? "En attente" : s === "DEMANDE" ? "Demandé" : s === "PRESCRIT" ? "Prescrit" : s;
-}
 
 export default function ExamensListPage() {
+  const t = useT();
   const { examens, patients } = useApp();
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<"Tous" | "En attente" | "Reçus">("Tous");
+
+  function statutLabel(s: StatutExamen) {
+    return s === "RESULTAT_RECU" ? t("examen_result_received")
+      : s === "EN_ATTENTE_RESULTAT" ? t("examen_pending")
+      : s === "DEMANDE" ? t("examen_requested")
+      : s === "PRESCRIT" ? t("examen_prescribed")
+      : s;
+  }
+
+  const FILTERS: { key: "Tous" | "En attente" | "Reçus"; label: string }[] = [
+    { key: "Tous", label: t("all") },
+    { key: "En attente", label: t("examen_pending") },
+    { key: "Reçus", label: t("examen_received_plural") },
+  ];
 
   const filtered = useMemo(() => {
     return examens
@@ -39,12 +52,12 @@ export default function ExamensListPage() {
   return (
     <div className="space-y-5">
       <SectionHeader
-        eyebrow="Analyses & imagerie"
-        title="Examens & résultats"
-        description="Analyses, radios, échographies, ECG…"
+        eyebrow={t("examens_eyebrow")}
+        title={t("examens_page_title")}
+        description={t("examens_page_desc")}
         actions={
           <Link href="/examens/nouveau">
-            <Button variant="dark" leftIcon={<Plus className="h-3.5 w-3.5" />}>Nouvel examen</Button>
+            <Button variant="dark" leftIcon={<Plus className="h-3.5 w-3.5" />}>{t("new_examen_btn")}</Button>
           </Link>
         }
       />
@@ -53,14 +66,14 @@ export default function ExamensListPage() {
         <div className="p-3 flex flex-col sm:flex-row gap-3 sm:items-center border-b border-line">
           <Input
             className="flex-1 sm:max-w-md"
-            placeholder="Rechercher patient, intitulé…"
+            placeholder={t("examens_search_placeholder")}
             value={q}
             onChange={(e) => setQ(e.target.value)}
             leftIcon={<Search className="h-3.5 w-3.5" />}
           />
           <div className="flex gap-1.5 flex-wrap">
-            {(["Tous", "En attente", "Reçus"] as const).map((f) => (
-              <Chip key={f} active={filter === f} onClick={() => setFilter(f)}>{f}</Chip>
+            {FILTERS.map((f) => (
+              <Chip key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>{f.label}</Chip>
             ))}
           </div>
         </div>
@@ -68,8 +81,8 @@ export default function ExamensListPage() {
         {filtered.length === 0 ? (
           <EmptyState
             icon={<FlaskConical className="h-5 w-5" />}
-            title="Aucun examen"
-            action={<Link href="/examens/nouveau"><Button variant="dark">Créer une demande</Button></Link>}
+            title={t("no_examen")}
+            action={<Link href="/examens/nouveau"><Button variant="dark">{t("examen_create_request")}</Button></Link>}
           />
         ) : (
           <div className="divide-y divide-line">
@@ -86,12 +99,12 @@ export default function ExamensListPage() {
                       <Badge tone="info" size="sm">{e.type}</Badge>
                     </div>
                     <div className="text-[11px] text-ink-500 mt-0.5 truncate">
-                      {p ? `${p.prenom} ${p.nom}` : "—"} · Demandé le {formatDate(e.date_demande)}
+                      {p ? `${p.prenom} ${p.nom}` : "—"} · {t("requested_on")} {formatDate(e.date_demande, t.locale)}
                       {e.laboratoire ? ` · ${e.laboratoire}` : ""}
                     </div>
                   </div>
                   <Badge tone={statutTone(e.statut)} dot>{statutLabel(e.statut)}</Badge>
-                  <ChevronRight className="h-4 w-4 text-ink-300 shrink-0" />
+                  <ChevronRight className="dir-icon h-4 w-4 text-ink-300 shrink-0" />
                 </Link>
               );
             })}

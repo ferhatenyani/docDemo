@@ -2,6 +2,7 @@
 
 import { Modal } from "./Modal";
 import { Button } from "./Button";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   open: boolean;
@@ -15,9 +16,12 @@ interface Props {
 }
 
 export function ConfirmDialog({
-  open, title, description, confirmLabel = "Confirmer", cancelLabel = "Annuler",
+  open, title, description, confirmLabel, cancelLabel,
   destructive, onCancel, onConfirm,
 }: Props) {
+  const t = useT();
+  const confirm = confirmLabel ?? t("confirm");
+  const cancel = cancelLabel ?? t("cancel");
   return (
     <Modal
       open={open}
@@ -27,12 +31,12 @@ export function ConfirmDialog({
       size="sm"
       footer={
         <>
-          <Button variant="ghost" onClick={onCancel}>{cancelLabel}</Button>
+          <Button variant="ghost" onClick={onCancel}>{cancel}</Button>
           <Button
             variant={destructive ? "danger" : "primary"}
             onClick={onConfirm}
           >
-            {confirmLabel}
+            {confirm}
           </Button>
         </>
       }

@@ -13,13 +13,13 @@ import { t } from "@/lib/i18n";
 import { ALLOWED_NAV_KEYS } from "@/lib/permissions";
 
 interface NavGroup {
-  label: string;
+  labelKey: string;
   items: readonly { href: string; key: string; icon: any }[];
 }
 
 const NAV: readonly NavGroup[] = [
   {
-    label: "Général",
+    labelKey: "nav_group_general",
     items: [
       { href: "/dashboard", key: "nav_dashboard", icon: LayoutDashboard },
       { href: "/patients", key: "nav_patients", icon: Users },
@@ -27,7 +27,7 @@ const NAV: readonly NavGroup[] = [
     ],
   },
   {
-    label: "Cliniques",
+    labelKey: "nav_group_clinical",
     items: [
       { href: "/consultations", key: "nav_consultations", icon: Stethoscope },
       { href: "/ordonnances", key: "nav_ordonnances", icon: PillBottle },
@@ -37,7 +37,7 @@ const NAV: readonly NavGroup[] = [
     ],
   },
   {
-    label: "Gestion",
+    labelKey: "nav_group_management",
     items: [
       { href: "/facturation", key: "nav_facturation", icon: ReceiptText },
       { href: "/caisse", key: "nav_caisse", icon: Wallet },
@@ -60,8 +60,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
         const items = group.items.filter((it) => allowed.has(it.key));
         if (items.length === 0) return null;
         return (
-          <div key={group.label} className="pt-4 first:pt-2">
-            <div className="eyebrow px-2 pb-1.5">{group.label}</div>
+          <div key={group.labelKey} className="pt-4 first:pt-2">
+            <div className="eyebrow px-2 pb-1.5">{t(locale, group.labelKey)}</div>
             <div className="space-y-0.5">
               {items.map(({ href, key, icon: Icon }) => {
                 const active = pathname === href || pathname?.startsWith(href + "/");
@@ -142,7 +142,7 @@ export function MobileNavDrawer({ open, onClose }: { open: boolean; onClose: () 
             </div>
           </div>
           <button
-            aria-label="Fermer le menu"
+            aria-label={t(locale, "close_menu")}
             onClick={onClose}
             className="h-9 w-9 rounded-md grid place-items-center text-ink-500 hover:bg-ink-100 cursor-pointer transition-colors"
           >

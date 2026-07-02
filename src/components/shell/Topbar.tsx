@@ -44,7 +44,7 @@ export function Topbar({ onOpenMobileNav }: { onOpenMobileNav: () => void }) {
       <div className="w-full px-3 sm:px-6 lg:px-8 h-14 sm:h-15 flex items-center gap-2 sm:gap-3">
         <button
           onClick={onOpenMobileNav}
-          aria-label="Ouvrir le menu"
+          aria-label={t(locale, "open_menu")}
           className="lg:hidden h-9 w-9 shrink-0 grid place-items-center rounded-md hover:bg-ink-100 cursor-pointer transition-colors"
         >
           <Menu className="h-5 w-5" />
@@ -65,7 +65,7 @@ export function Topbar({ onOpenMobileNav }: { onOpenMobileNav: () => void }) {
           {openResults && q.trim().length >= 2 && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-line shadow-overlay py-1 max-h-80 overflow-auto z-40 animate-popIn">
               {results.length === 0 && (
-                <div className="px-3 py-3 text-[13px] text-ink-500">Aucun patient trouvé</div>
+                <div className="px-3 py-3 text-[13px] text-ink-500">{t(locale, "no_patient_found")}</div>
               )}
               {results.map((p) => (
                 <Link

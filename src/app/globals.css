@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Arabic web font — improves readability & prevents ugly system fallback */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
 /* ------------------------------------------------------------
    Refined professional base — Apple-inspired, low-radius
 ------------------------------------------------------------- */
@@ -144,8 +147,67 @@ select { background-image: none; }
 }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* RTL helpers */
+/* ------------------------------------------------------------
+   RTL support
+------------------------------------------------------------- */
 [dir="rtl"] .rtl-flip { transform: scaleX(-1); }
+
+/* Arabic font stack — applied globally when direction is RTL */
+[dir="rtl"], [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select, [dir="rtl"] button {
+  font-family: "IBM Plex Sans Arabic", "Segoe UI", "Tahoma", "Arial", system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+/* Numbers should remain LTR even when embedded in Arabic text */
+[dir="rtl"] .tabular,
+[dir="rtl"] .tabular-nums,
+[dir="rtl"] [data-numeric="true"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+}
+
+/* Flip common directional icons (chevrons, arrows). Only affects icons
+   explicitly opted-in via the `dir-icon` class. */
+[dir="rtl"] .dir-icon { transform: scaleX(-1); }
+
+/* Horizontal scroll safety — allow long Arabic phrases to wrap */
+[dir="rtl"] body { text-align: right; }
+
+/* Table headers default to text-align:left inline — override per-dir.
+   Overriding `text-left` when RTL keeps headers aligned to the reading
+   edge without needing to touch every page. */
+[dir="rtl"] .text-left  { text-align: right; }
+[dir="rtl"] .text-right { text-align: left;  }
+
+/* ------------------------------------------------------------
+   Text overflow protection
+   Arabic glyphs are wider than Latin — cards/badges that used
+   `whitespace-nowrap` + `truncate` can be too tight. Provide a
+   consistent, safe wrapping utility.
+------------------------------------------------------------- */
+.text-balance { text-wrap: balance; }
+.text-pretty  { text-wrap: pretty;  }
+
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* When an element has data-ellipsis="always" it truncates in both
+   directions, but ensures enough room via min-width:0 on the parent. */
+[data-ellipsis="always"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* Buttons should never clip their label — allow shrinking. */
+button, [role="button"] {
+  min-width: 0;
+}
 
 /* Print */
 @media print {

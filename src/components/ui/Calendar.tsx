@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLocale, t as translate } from "@/lib/i18n";
 
 interface Props {
   value?: string;
@@ -25,7 +26,9 @@ function iso(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-export function Calendar({ value, onChange, className, minDate, markers, locale = "fr" }: Props) {
+export function Calendar({ value, onChange, className, minDate, markers, locale }: Props) {
+  const storeLocale = useLocale();
+  const loc = locale ?? storeLocale;
   const initial = value ? new Date(value + "T00:00:00") : new Date();
   const [cursor, setCursor] = useState<{ y: number; m: number }>({
     y: initial.getFullYear(),
@@ -33,8 +36,8 @@ export function Calendar({ value, onChange, className, minDate, markers, locale 
   });
 
   const today = iso(new Date());
-  const MONTHS = locale === "ar" ? MONTHS_AR : MONTHS_FR;
-  const DAYS = locale === "ar" ? DAYS_AR : DAYS_FR;
+  const MONTHS = loc === "ar" ? MONTHS_AR : MONTHS_FR;
+  const DAYS = loc === "ar" ? DAYS_AR : DAYS_FR;
 
   const cells = useMemo(() => {
     const first = new Date(cursor.y, cursor.m, 1);
@@ -68,17 +71,17 @@ export function Calendar({ value, onChange, className, minDate, markers, locale 
             type="button"
             onClick={() => shift(-1)}
             className="h-7 w-7 grid place-items-center rounded-md hover:bg-ink-100 cursor-pointer text-ink-600"
-            aria-label="Mois précédent"
+            aria-label={translate(loc, "previous")}
           >
-            <ChevronLeft className="h-3.5 w-3.5" />
+            <ChevronLeft className="h-3.5 w-3.5 dir-icon" />
           </button>
           <button
             type="button"
             onClick={() => shift(1)}
             className="h-7 w-7 grid place-items-center rounded-md hover:bg-ink-100 cursor-pointer text-ink-600"
-            aria-label="Mois suivant"
+            aria-label={translate(loc, "next")}
           >
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-3.5 w-3.5 dir-icon" />
           </button>
         </div>
       </div>
