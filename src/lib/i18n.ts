@@ -15,7 +15,7 @@ type Dict = Record<string, string>;
 // -------------------------------------------------------------
 const fr: Dict = {
   // ---- Brand & shell -----------------------------------------
-  app_name: "Ibn Sina",
+  app_name: "ClinicOS",
   app_tagline: "Gestion médicale",
   search: "Rechercher…",
   search_patient_placeholder: "Rechercher par nom, code, téléphone, Chifa…",
@@ -862,7 +862,7 @@ const fr: Dict = {
 // -------------------------------------------------------------
 const ar: Dict = {
   // ---- Brand & shell -----------------------------------------
-  app_name: "ابن سينا",
+  app_name: "ClinicOS",
   app_tagline: "الإدارة الطبية",
   search: "بحث…",
   search_patient_placeholder: "ابحث بالاسم أو الرمز أو الهاتف أو رقم شفاء…",

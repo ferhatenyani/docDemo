@@ -30,12 +30,12 @@ export const WILAYAS = [
 
 export const clinique: Clinique = {
   id: "clinic-001",
-  raison_sociale: "Cabinet Médical Ibn Sina",
+  raison_sociale: "Cabinet Médical Central",
   adresse: "12 Rue Didouche Mourad",
   wilaya: "Alger",
   commune: "Alger Centre",
   telephone: "021 63 45 12",
-  email: "contact@cabinet-ibnsina.dz",
+  email: "contact@cabinet-central.dz",
   nif: "099816010074521",
   rc: "16/00-0234567 B 22",
   ai: "16548921",
