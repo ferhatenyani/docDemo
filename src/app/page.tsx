@@ -33,17 +33,18 @@ const dict = {
     nav_contact: "Contact",
     demo_short: "Démo",
     contact_us: "Nous contacter",
+    contact_short: "Contact",
     see_demo: "Voir la démo",
 
     hero_eyebrow: "Conçu pour les cabinets d'Algérie",
     hero_title_a: "Gérez votre cabinet,",
     hero_title_b: "sans effort.",
     hero_subtitle:
-      "Patients, rendez-vous, ordonnances et facturation en DA — une seule plateforme, pensée pour les praticiens algériens.",
-    hero_trust: "Utilisé par des cabinets à Alger, Oran, Constantine et Annaba.",
+      "Patients, rendez-vous, ordonnances et facturation en DA. Un seul outil, pensé pour les praticiens algériens.",
+    hero_trust: "Utilisé à Alger, Oran, Constantine et Annaba.",
 
-    features_eyebrow: "Tout inclus",
-    features_title: "Une plateforme complète.",
+    features_title: "Tout ce qu'il vous faut pour tenir votre cabinet.",
+    features_sub: "Huit modules connectés. Un seul login, un seul dossier patient, un seul journal comptable.",
     f_patients: "Dossiers patients",
     f_patients_desc: "Antécédents, Chifa, CNAS.",
     f_appointments: "Rendez-vous",
@@ -61,15 +62,15 @@ const dict = {
     f_dashboard: "Tableau de bord",
     f_dashboard_desc: "KPIs et statistiques.",
 
-    product_eyebrow: "Interface pensée pour vous",
-    product_title: "Rapide, clair, sans clic superflu.",
-    product_b1: "Dossier patient complet en un écran.",
+    product_title: "Chaque écran conçu pour cliquer moins.",
+    product_sub: "Pas de menus à tiroir, pas de champs qu'on remplit deux fois.",
+    product_b1: "Dossier patient complet sur un seul écran.",
     product_b2: "Ordonnance imprimable en 30 secondes.",
     product_b3: "Alertes d'interactions et d'allergies automatiques.",
     product_b4: "Suivi diabète et HTA avec courbes de tendance.",
 
-    algeria_eyebrow: "Fait pour l'Algérie",
-    algeria_title: "Adapté à votre réalité.",
+    algeria_title: "Fait pour l'Algérie, jusque dans les détails.",
+    algeria_sub: "Les choses qui rendent un logiciel étranger inutilisable ici sont natives chez nous.",
     algeria_da: "Dinar Algérien",
     algeria_da_desc: "Prix, factures, bilans en DA.",
     algeria_chifa: "CNAS / CASNOS / Chifa",
@@ -83,13 +84,12 @@ const dict = {
     stat_2_label: "consultations traitées",
     stat_3_label: "satisfaction",
     testimonial_quote:
-      "« En deux semaines, mon secrétariat n'imprime plus de fiches papier. La facturation en DA est impeccable. »",
+      "« En deux semaines, mon secrétariat n'imprime plus de fiches papier. La facturation en DA est impeccable. »",
     testimonial_name: "Dr. Amina B.",
-    testimonial_role: "Médecin généraliste — Alger",
+    testimonial_role: "Médecin généraliste, Alger",
 
-    contact_eyebrow: "Prêt à commencer ?",
     contact_title: "Parlons de votre cabinet.",
-    contact_subtitle: "Devis sous 24 h. Installation et formation incluses.",
+    contact_subtitle: "Devis sous 24 h. Installation et formation incluses.",
     contact_bullet_1: "Démo personnalisée pour votre équipe",
     contact_bullet_2: "Import de vos données existantes",
     contact_bullet_3: "Support en français et en arabe",
@@ -102,12 +102,11 @@ const dict = {
     form_message: "Message (optionnel)",
     form_message_ph: "Nombre de médecins, besoins spécifiques…",
     form_submit: "Envoyer la demande",
-    form_success: "Merci. Nous vous répondons sous 24 h.",
+    form_success: "Merci. Nous vous répondons sous 24 h.",
 
     footer_tag: "Le système de gestion des cliniques modernes.",
     footer_copy: "Tous droits réservés.",
     footer_product: "Produit",
-    footer_company: "Société",
     footer_legal: "Mentions légales",
     footer_terms: "Conditions",
     footer_privacy: "Confidentialité",
@@ -126,17 +125,18 @@ const dict = {
     nav_contact: "Contact",
     demo_short: "Demo",
     contact_us: "Contact us",
+    contact_short: "Contact",
     see_demo: "See demo",
 
     hero_eyebrow: "Built for clinics in Algeria",
     hero_title_a: "Run your clinic,",
     hero_title_b: "effortlessly.",
     hero_subtitle:
-      "Patients, appointments, prescriptions and billing in DA — one platform, made for Algerian practitioners.",
-    hero_trust: "Trusted by clinics in Algiers, Oran, Constantine and Annaba.",
+      "Patients, appointments, prescriptions and billing in DA. One tool, made for Algerian practitioners.",
+    hero_trust: "Used in Algiers, Oran, Constantine and Annaba.",
 
-    features_eyebrow: "All in one",
-    features_title: "One complete platform.",
+    features_title: "Everything you need to run the clinic.",
+    features_sub: "Eight connected modules. One login, one patient file, one accounting journal.",
     f_patients: "Patient records",
     f_patients_desc: "History, Chifa, CNAS.",
     f_appointments: "Appointments",
@@ -154,15 +154,15 @@ const dict = {
     f_dashboard: "Dashboard",
     f_dashboard_desc: "KPIs & analytics.",
 
-    product_eyebrow: "Interface built around you",
-    product_title: "Fast, clear, no wasted clicks.",
-    product_b1: "Full patient file in a single screen.",
+    product_title: "Every screen built for fewer clicks.",
+    product_sub: "No hidden menus, no fields you fill twice.",
+    product_b1: "Full patient file on a single screen.",
     product_b2: "Printable prescription in 30 seconds.",
-    product_b3: "Automatic drug interaction & allergy alerts.",
+    product_b3: "Automatic drug interaction and allergy alerts.",
     product_b4: "Diabetes and HTN follow-up with trend curves.",
 
-    algeria_eyebrow: "Made for Algeria",
-    algeria_title: "Fits your daily reality.",
+    algeria_title: "Made for Algeria, down to the details.",
+    algeria_sub: "The things that make foreign software unusable here are native for us.",
     algeria_da: "Algerian Dinar",
     algeria_da_desc: "Prices, invoices, reports in DA.",
     algeria_chifa: "CNAS / CASNOS / Chifa",
@@ -178,9 +178,8 @@ const dict = {
     testimonial_quote:
       "\"In two weeks, our front desk stopped printing paper files. Billing in DA is flawless.\"",
     testimonial_name: "Dr. Amina B.",
-    testimonial_role: "General practitioner — Algiers",
+    testimonial_role: "General practitioner, Algiers",
 
-    contact_eyebrow: "Ready to get started?",
     contact_title: "Let's talk about your clinic.",
     contact_subtitle: "Quote in 24h. Setup and training included.",
     contact_bullet_1: "Personalized demo for your team",
@@ -200,7 +199,6 @@ const dict = {
     footer_tag: "The management system for modern clinics.",
     footer_copy: "All rights reserved.",
     footer_product: "Product",
-    footer_company: "Company",
     footer_legal: "Legal",
     footer_terms: "Terms",
     footer_privacy: "Privacy",
@@ -214,20 +212,22 @@ const dict = {
   },
 } as const;
 
+type Dict = { [K in keyof (typeof dict)["fr"]]: string };
+
 export default function LandingPage() {
   const [locale, setLocale] = useState<Locale>("fr");
   const [submitted, setSubmitted] = useState(false);
   const t = dict[locale];
 
   const features = [
-    { icon: Users, title: t.f_patients, desc: t.f_patients_desc },
-    { icon: CalendarDays, title: t.f_appointments, desc: t.f_appointments_desc },
-    { icon: Stethoscope, title: t.f_consultations, desc: t.f_consultations_desc },
-    { icon: FilePlus2, title: t.f_prescriptions, desc: t.f_prescriptions_desc },
-    { icon: Receipt, title: t.f_billing, desc: t.f_billing_desc },
-    { icon: HeartPulse, title: t.f_chronic, desc: t.f_chronic_desc },
-    { icon: Package, title: t.f_stock, desc: t.f_stock_desc },
-    { icon: LayoutDashboard, title: t.f_dashboard, desc: t.f_dashboard_desc },
+    { icon: Users, title: t.f_patients, desc: t.f_patients_desc, tone: "brand" as const },
+    { icon: CalendarDays, title: t.f_appointments, desc: t.f_appointments_desc, tone: "success" as const },
+    { icon: Stethoscope, title: t.f_consultations, desc: t.f_consultations_desc, tone: "brand" as const },
+    { icon: FilePlus2, title: t.f_prescriptions, desc: t.f_prescriptions_desc, tone: "info" as const },
+    { icon: Receipt, title: t.f_billing, desc: t.f_billing_desc, tone: "warning" as const },
+    { icon: HeartPulse, title: t.f_chronic, desc: t.f_chronic_desc, tone: "brand" as const },
+    { icon: Package, title: t.f_stock, desc: t.f_stock_desc, tone: "info" as const },
+    { icon: LayoutDashboard, title: t.f_dashboard, desc: t.f_dashboard_desc, tone: "success" as const },
   ];
 
   const algeriaCards = [
@@ -239,19 +239,19 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-dvh bg-white text-ink-900 antialiased">
-      {/* Ambient background */}
+      {/* Ambient background — contained to viewport width so it never widens the page */}
       <div className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[520px] overflow-hidden">
-        <div className="absolute left-1/2 top-[-120px] h-[420px] w-[820px] -translate-x-1/2 rounded-[50%] bg-gradient-to-b from-brand-100/70 via-brand-50/60 to-transparent blur-3xl" />
-        <div className="absolute right-[-80px] top-[40px] h-[240px] w-[240px] rounded-full bg-success-soft/70 blur-3xl" />
+        <div className="absolute left-1/2 top-[-160px] h-[420px] w-[min(820px,140%)] -translate-x-1/2 rounded-[50%] bg-gradient-to-b from-brand-100/70 via-brand-50/60 to-transparent blur-3xl" />
+        <div className="absolute right-[-60px] top-[40px] h-[220px] w-[220px] rounded-full bg-success-soft/70 blur-3xl" />
       </div>
 
       {/* NAV */}
-      <header className="sticky top-0 z-40 border-b border-line/70 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
+      <header className="sticky top-0 z-40 border-b border-line/60 bg-white/85 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:h-16 sm:px-6">
+          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="docpilore">
             <BrandMark />
             <span className="text-[15px] font-semibold tracking-tightest text-ink-900">
-              ClinicOS
+              docpilore
             </span>
           </Link>
 
@@ -267,7 +267,7 @@ export default function LandingPage() {
             </a>
           </nav>
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1 shrink-0 sm:gap-2">
             <LocaleSwitch locale={locale} setLocale={setLocale} />
             <Link
               href={DEMO_URL}
@@ -277,10 +277,11 @@ export default function LandingPage() {
             </Link>
             <a
               href="#contact"
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-900 px-3 text-[13px] font-semibold text-white transition hover:bg-ink-800 sm:px-4"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-900 px-2.5 text-[13px] font-semibold text-white transition hover:bg-ink-800 sm:px-4"
             >
-              {t.contact_us}
-              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+              <span className="sm:hidden">{t.contact_short}</span>
+              <span className="hidden sm:inline">{t.contact_us}</span>
+              <ArrowRight className="hidden h-3.5 w-3.5 sm:inline" strokeWidth={2.5} />
             </a>
           </div>
         </div>
@@ -290,23 +291,22 @@ export default function LandingPage() {
         {/* HERO */}
         <section className="relative">
           <div className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6 sm:pb-16 sm:pt-14 lg:pb-24 lg:pt-20">
-            <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14">
+            <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 [&>*]:min-w-0">
               {/* Left column */}
-              <div>
+              <div className="min-w-0">
                 <div className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-brand-700">
                   <Sparkles className="h-3 w-3" strokeWidth={2.5} />
                   {t.hero_eyebrow}
                 </div>
 
-                <h1 className="mt-4 text-[34px] font-semibold leading-[1.05] tracking-tightest text-ink-900 sm:text-5xl lg:text-[56px] lg:leading-[1.02]">
+                <h1
+                  className="mt-4 text-[28px] font-semibold leading-[1.08] tracking-tightest text-ink-900 sm:text-[44px] sm:leading-[1.04] lg:text-[58px] lg:leading-[1.02]"
+                >
                   {t.hero_title_a}
-                  <br />
-                  <span className="bg-gradient-to-br from-brand-600 to-brand-400 bg-clip-text text-transparent">
-                    {t.hero_title_b}
-                  </span>
+                  <span className="block text-brand-600">{t.hero_title_b}</span>
                 </h1>
 
-                <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-600 sm:text-base">
+                <p className="mt-4 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-600 sm:text-base">
                   {t.hero_subtitle}
                 </p>
 
@@ -327,7 +327,7 @@ export default function LandingPage() {
                   </Link>
                 </div>
 
-                <p className="mt-5 flex items-center gap-2 text-[12px] text-ink-500 sm:mt-6">
+                <p className="mt-5 flex items-center gap-2 text-[12px] text-ink-600 sm:mt-6">
                   <span className="flex -space-x-1">
                     <Avatar seed={1} />
                     <Avatar seed={2} />
@@ -338,7 +338,7 @@ export default function LandingPage() {
               </div>
 
               {/* Right column — dashboard mockup */}
-              <div className="relative">
+              <div className="relative min-w-0">
                 <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-brand-100/60 to-transparent blur-2xl" />
                 <DashboardPreview t={t} />
               </div>
@@ -350,25 +350,25 @@ export default function LandingPage() {
         <section id="features" className="border-t border-line/60 bg-surface-muted/50">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
             <div className="max-w-2xl">
-              <div className="eyebrow text-brand-700">{t.features_eyebrow}</div>
-              <h2 className="mt-2 text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
+              <h2 className="text-balance text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
                 {t.features_title}
               </h2>
+              <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-600 sm:text-[15px]">
+                {t.features_sub}
+              </p>
             </div>
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 md:grid-cols-4">
               {features.map((f) => (
                 <div
                   key={f.title}
-                  className="group relative overflow-hidden rounded-2xl border border-line bg-white p-4 shadow-xs transition hover:-translate-y-0.5 hover:shadow-card sm:p-5"
+                  className="group relative overflow-hidden rounded-2xl border border-line bg-white p-4 shadow-xs transition duration-300 hover:-translate-y-0.5 hover:shadow-card sm:p-5"
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-100 sm:h-10 sm:w-10">
-                    <f.icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2} />
-                  </div>
+                  <FeatureIcon icon={f.icon} tone={f.tone} />
                   <h3 className="mt-3 text-[13px] font-semibold text-ink-900 sm:text-[15px]">
                     {f.title}
                   </h3>
-                  <p className="mt-1 text-[12px] leading-snug text-ink-500 sm:text-[13px]">
+                  <p className="mt-1 text-[12px] leading-snug text-ink-600 sm:text-[13px]">
                     {f.desc}
                   </p>
                 </div>
@@ -380,26 +380,29 @@ export default function LandingPage() {
         {/* PRODUCT HIGHLIGHT */}
         <section id="product" className="border-t border-line/60 bg-white">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
-            <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
+            <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
               <div>
-                <div className="eyebrow text-brand-700">{t.product_eyebrow}</div>
-                <h2 className="mt-2 text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
+                <h2 className="text-balance text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
                   {t.product_title}
                 </h2>
-                <ul className="mt-5 grid grid-cols-1 gap-2.5 sm:mt-7 sm:gap-3">
+                <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-600 sm:text-[15px]">
+                  {t.product_sub}
+                </p>
+
+                <ul className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:gap-4">
                   {[t.product_b1, t.product_b2, t.product_b3, t.product_b4].map((b) => (
-                    <li key={b} className="flex items-start gap-3 rounded-xl border border-line bg-white p-3 sm:p-3.5">
+                    <li key={b} className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-success-soft text-success">
                         <Check className="h-3 w-3" strokeWidth={3} />
                       </span>
-                      <span className="text-[13px] leading-snug text-ink-800 sm:text-[14px]">
+                      <span className="text-[13.5px] leading-snug text-ink-800 sm:text-[15px]">
                         {b}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:gap-3">
+                <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:gap-3">
                   <Link
                     href={DEMO_URL}
                     className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-line-strong bg-white px-4 text-[14px] font-semibold text-ink-800 shadow-xs transition hover:bg-ink-50"
@@ -423,10 +426,12 @@ export default function LandingPage() {
         <section className="border-t border-line/60 bg-surface-muted/50">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
             <div className="max-w-2xl">
-              <div className="eyebrow text-brand-700">{t.algeria_eyebrow}</div>
-              <h2 className="mt-2 text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
+              <h2 className="text-balance text-[26px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
                 {t.algeria_title}
               </h2>
+              <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-600 sm:text-[15px]">
+                {t.algeria_sub}
+              </p>
             </div>
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-4">
@@ -441,7 +446,7 @@ export default function LandingPage() {
                   <h3 className="mt-3 text-[13px] font-semibold text-ink-900 sm:text-[15px]">
                     {c.title}
                   </h3>
-                  <p className="mt-1 text-[12px] leading-snug text-ink-500 sm:text-[13px]">
+                  <p className="mt-1 text-[12px] leading-snug text-ink-600 sm:text-[13px]">
                     {c.desc}
                   </p>
                 </div>
@@ -476,17 +481,16 @@ export default function LandingPage() {
         {/* CONTACT */}
         <section id="contact" className="border-t border-line/60 bg-white">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
+            <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
               <div>
-                <div className="eyebrow text-brand-700">{t.contact_eyebrow}</div>
-                <h2 className="mt-2 text-[28px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
+                <h2 className="text-balance text-[28px] font-semibold leading-tight tracking-tightest text-ink-900 sm:text-4xl">
                   {t.contact_title}
                 </h2>
-                <p className="mt-3 text-[14px] leading-relaxed text-ink-600 sm:text-[15px]">
+                <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-600 sm:text-[15px]">
                   {t.contact_subtitle}
                 </p>
 
-                <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-1">
+                <ul className="mt-6 grid grid-cols-1 gap-2.5">
                   {[t.contact_bullet_1, t.contact_bullet_2, t.contact_bullet_3].map((b) => (
                     <li key={b} className="flex items-start gap-2.5 text-[13px] text-ink-800 sm:text-[14px]">
                       <Check className="mt-0.5 h-4 w-4 flex-none text-success" strokeWidth={2.5} />
@@ -512,7 +516,7 @@ export default function LandingPage() {
                       e.preventDefault();
                       setSubmitted(true);
                     }}
-                    className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+                    className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4"
                   >
                     <Field
                       label={t.form_name}
@@ -536,10 +540,11 @@ export default function LandingPage() {
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="block text-[12px] font-medium text-ink-700">
+                      <label htmlFor="message" className="block text-[12px] font-medium text-ink-700">
                         {t.form_message}
                       </label>
                       <textarea
+                        id="message"
                         rows={3}
                         placeholder={t.form_message_ph}
                         className="mt-1 w-full rounded-lg border border-line-strong bg-white px-3 py-2 text-[14px] text-ink-900 placeholder:text-ink-400 shadow-xs transition focus:border-brand-500 focus:shadow-ring"
@@ -568,10 +573,10 @@ export default function LandingPage() {
               <div className="flex items-center gap-2">
                 <BrandMark />
                 <span className="text-[15px] font-semibold tracking-tightest text-ink-900">
-                  ClinicOS
+                  docpilore
                 </span>
               </div>
-              <p className="mt-2 max-w-xs text-[12px] leading-snug text-ink-500 sm:text-[13px]">
+              <p className="mt-2 max-w-xs text-[12px] leading-snug text-ink-600 sm:text-[13px]">
                 {t.footer_tag}
               </p>
             </div>
@@ -592,7 +597,7 @@ export default function LandingPage() {
             />
           </div>
           <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-line/70 pt-5 text-[11px] text-ink-500 sm:flex-row sm:items-center sm:text-[12px]">
-            <div>© {new Date().getFullYear()} ClinicOS. {t.footer_copy}</div>
+            <div>© {new Date().getFullYear()} docpilore. {t.footer_copy}</div>
             <div>Alger · Oran · Constantine</div>
           </div>
         </div>
@@ -605,8 +610,19 @@ export default function LandingPage() {
 
 function BrandMark() {
   return (
-    <span className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-brand-500 shadow-[0_6px_14px_-6px_rgba(0,113,227,0.7)]">
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
+    <span
+      aria-hidden
+      className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-brand-500 shadow-[0_6px_14px_-6px_rgba(0,113,227,0.7)]"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-3.5 w-3.5 text-white"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M12 4v16M4 12h16" />
       </svg>
     </span>
@@ -626,7 +642,7 @@ function LocaleSwitch({
         <button
           key={l}
           onClick={() => setLocale(l)}
-          className={`h-7 rounded-md px-2 uppercase tracking-wide transition sm:px-2.5 ${
+          className={`h-7 rounded-md px-2 uppercase tracking-wide transition ${
             locale === l
               ? "bg-ink-900 text-white"
               : "text-ink-500 hover:text-ink-800"
@@ -637,6 +653,28 @@ function LocaleSwitch({
           {l}
         </button>
       ))}
+    </div>
+  );
+}
+
+function FeatureIcon({
+  icon: Icon,
+  tone,
+}: {
+  icon: typeof Users;
+  tone: "brand" | "success" | "info" | "warning";
+}) {
+  const toneMap = {
+    brand: "bg-brand-50 text-brand-700 ring-brand-100",
+    success: "bg-success-soft text-success ring-success/20",
+    info: "bg-info-soft text-info ring-info/20",
+    warning: "bg-warning-soft text-warning ring-warning/20",
+  } as const;
+  return (
+    <div
+      className={`flex h-9 w-9 items-center justify-center rounded-xl ring-1 ring-inset sm:h-10 sm:w-10 ${toneMap[tone]}`}
+    >
+      <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2} />
     </div>
   );
 }
@@ -715,6 +753,7 @@ function Avatar({ seed, large }: { seed: number; large?: boolean }) {
   const size = large ? "h-8 w-8 text-[11px]" : "h-6 w-6 text-[9px]";
   return (
     <span
+      aria-hidden
       className={`inline-flex ${size} items-center justify-center rounded-full ${bg} font-bold text-white ring-2 ring-white`}
     >
       {initials}
@@ -724,39 +763,37 @@ function Avatar({ seed, large }: { seed: number; large?: boolean }) {
 
 /* ---------------------- Product mockups ---------------------- */
 
-type Dict = { [K in keyof (typeof dict)["fr"]]: string };
-
 function DashboardPreview({ t }: { t: Dict }) {
   return (
     <div className="relative rounded-2xl border border-line bg-white p-2.5 shadow-pop sm:rounded-3xl sm:p-3">
       {/* Window chrome */}
       <div className="flex items-center gap-1.5 px-1.5 pb-2">
-        <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
-        <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
-        <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-        <div className="ml-3 h-4 flex-1 rounded-md bg-surface-muted px-2 text-[9px] leading-4 text-ink-400">
-          app.clinicos.dz/dashboard
+        <span className="h-2 w-2 rounded-full bg-[#ff5f57]" aria-hidden />
+        <span className="h-2 w-2 rounded-full bg-[#febc2e]" aria-hidden />
+        <span className="h-2 w-2 rounded-full bg-[#28c840]" aria-hidden />
+        <div className="ml-3 h-4 flex-1 truncate rounded-md bg-surface-muted px-2 text-[9px] leading-4 text-ink-500">
+          app.docpilore.dz/dashboard
         </div>
       </div>
 
       {/* Body */}
-      <div className="overflow-hidden rounded-xl bg-surface-muted p-3 sm:p-4">
+      <div className="overflow-hidden rounded-xl bg-surface-muted p-2.5 sm:p-4">
         {/* KPI row */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5">
           <MiniKPI label={t.dash_kpi_patients} value="28" delta="+12%" positive />
           <MiniKPI label={t.dash_kpi_revenue} value="94 500" suffix="DA" delta="+8%" positive />
           <MiniKPI label={t.dash_kpi_rdv} value="14" delta="—" />
         </div>
 
         {/* Chart + list */}
-        <div className="mt-3 grid gap-2.5 sm:mt-3.5 sm:grid-cols-[1.15fr_1fr]">
+        <div className="mt-2.5 grid gap-2 sm:mt-3.5 sm:gap-2.5 sm:grid-cols-[1.15fr_1fr]">
           {/* Chart card */}
           <div className="rounded-lg border border-line bg-white p-2.5 sm:p-3">
             <div className="mb-2 flex items-center justify-between">
               <div className="text-[10px] font-semibold text-ink-700 sm:text-[11px]">
                 Consultations
               </div>
-              <div className="text-[9px] text-ink-400 sm:text-[10px]">7j</div>
+              <div className="text-[9px] text-ink-500 sm:text-[10px]">7j</div>
             </div>
             <MiniSparkline />
           </div>
@@ -773,7 +810,7 @@ function DashboardPreview({ t }: { t: Dict }) {
                 { time: "11:15", name: "R. Mansouri", status: t.dash_confirmed, ok: true },
               ].map((r) => (
                 <li key={r.time} className="flex items-center gap-2">
-                  <span className="tabular font-mono text-[9px] text-ink-400 sm:text-[10px]">
+                  <span className="tabular font-mono text-[9px] text-ink-500 sm:text-[10px]">
                     {r.time}
                   </span>
                   <span className="flex-1 truncate text-[10px] text-ink-800 sm:text-[11px]">
@@ -813,7 +850,7 @@ function MiniKPI({
 }) {
   return (
     <div className="rounded-lg border border-line bg-white p-2 sm:p-2.5">
-      <div className="truncate text-[8.5px] uppercase tracking-[0.05em] text-ink-400 sm:text-[9.5px]">
+      <div className="truncate text-[8.5px] uppercase tracking-[0.05em] text-ink-500 sm:text-[9.5px]">
         {label}
       </div>
       <div className="mt-1 flex items-baseline gap-1">
@@ -826,7 +863,7 @@ function MiniKPI({
       </div>
       <div
         className={`mt-0.5 text-[9px] font-medium sm:text-[10px] ${
-          positive ? "text-success" : "text-ink-400"
+          positive ? "text-success" : "text-ink-500"
         }`}
       >
         {delta}
@@ -842,11 +879,14 @@ function MiniSparkline() {
   const h = 42;
   const step = w / (points.length - 1);
   const path = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${(i * step).toFixed(1)} ${(h - (p / max) * h * 0.9).toFixed(1)}`)
+    .map(
+      (p, i) =>
+        `${i === 0 ? "M" : "L"} ${(i * step).toFixed(1)} ${(h - (p / max) * h * 0.9).toFixed(1)}`
+    )
     .join(" ");
   const areaPath = `${path} L ${w} ${h} L 0 ${h} Z`;
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="h-10 w-full sm:h-12">
+    <svg viewBox={`0 0 ${w} ${h}`} className="h-10 w-full sm:h-12" aria-hidden>
       <defs>
         <linearGradient id="spark" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="#0071e3" stopOpacity="0.28" />
@@ -854,7 +894,14 @@ function MiniSparkline() {
         </linearGradient>
       </defs>
       <path d={areaPath} fill="url(#spark)" />
-      <path d={path} fill="none" stroke="#0071e3" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={path}
+        fill="none"
+        stroke="#0071e3"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -866,25 +913,27 @@ function PatientFilePreview({ locale }: { locale: Locale }) {
           patient: "Dossier patient",
           age: "42 ans · F",
           insurance: "CNAS",
-          chifa: "N° Chifa",
           tension: "Tension",
           glycemie: "Glycémie",
           poids: "Poids",
           alert: "Interaction médicamenteuse détectée",
           treat: "Traitement en cours",
           next: "Prochain RDV",
+          next_val: "15 juil. · 10:30",
+          next_note: "Contrôle glycémie",
         }
       : {
           patient: "Patient file",
           age: "42 y · F",
           insurance: "CNAS",
-          chifa: "Chifa no.",
           tension: "BP",
           glycemie: "Glucose",
           poids: "Weight",
           alert: "Drug interaction detected",
           treat: "Current treatment",
           next: "Next visit",
+          next_val: "Jul 15 · 10:30",
+          next_note: "Glucose check",
         };
 
   return (
@@ -894,8 +943,8 @@ function PatientFilePreview({ locale }: { locale: Locale }) {
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-[13px] font-bold text-brand-700 ring-1 ring-brand-100">
           AB
         </div>
-        <div className="flex-1">
-          <div className="text-[13px] font-semibold text-ink-900">Amina Belkacem</div>
+        <div className="flex-1 min-w-0">
+          <div className="truncate text-[13px] font-semibold text-ink-900">Amina Belkacem</div>
           <div className="text-[10.5px] text-ink-500 sm:text-[11px]">
             {labels.age} · {labels.insurance}
           </div>
@@ -915,7 +964,15 @@ function PatientFilePreview({ locale }: { locale: Locale }) {
       {/* Alert */}
       <div className="mt-3 flex items-start gap-2 rounded-lg border border-warning/30 bg-warning-soft/70 p-2.5">
         <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-warning text-white">
-          <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-3 w-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={3}
+            strokeLinecap="round"
+            aria-hidden
+          >
             <path d="M12 9v4M12 17h.01" />
           </svg>
         </span>
@@ -928,20 +985,20 @@ function PatientFilePreview({ locale }: { locale: Locale }) {
       {/* Treatment + next */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-lg border border-line p-2.5">
-          <div className="text-[9.5px] uppercase tracking-[0.06em] text-ink-400">
+          <div className="text-[9.5px] uppercase tracking-[0.06em] text-ink-500">
             {labels.treat}
           </div>
           <div className="mt-1 text-[11px] font-medium text-ink-800">
             Metformine 500 mg · 2×/j
           </div>
-          <div className="text-[10.5px] text-ink-500">Amlodipine 5 mg · 1×/j</div>
+          <div className="text-[10.5px] text-ink-600">Amlodipine 5 mg · 1×/j</div>
         </div>
         <div className="rounded-lg border border-line p-2.5">
-          <div className="text-[9.5px] uppercase tracking-[0.06em] text-ink-400">
+          <div className="text-[9.5px] uppercase tracking-[0.06em] text-ink-500">
             {labels.next}
           </div>
-          <div className="mt-1 text-[11px] font-semibold text-ink-800">15 juil. · 10:30</div>
-          <div className="text-[10.5px] text-ink-500">Contrôle glycémie</div>
+          <div className="mt-1 text-[11px] font-semibold text-ink-800">{labels.next_val}</div>
+          <div className="text-[10.5px] text-ink-600">{labels.next_note}</div>
         </div>
       </div>
     </div>
@@ -961,7 +1018,7 @@ function VitalCard({
 }) {
   return (
     <div className="rounded-lg border border-line bg-surface-muted/60 p-2">
-      <div className="text-[9px] uppercase tracking-[0.06em] text-ink-400">{label}</div>
+      <div className="text-[9px] uppercase tracking-[0.06em] text-ink-500">{label}</div>
       <div className="mt-0.5 flex items-baseline gap-1">
         <span
           className={`text-[13px] font-semibold tabular ${

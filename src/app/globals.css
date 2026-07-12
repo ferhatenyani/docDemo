@@ -132,20 +132,23 @@ select { background-image: none; }
   border-radius: 6px;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.14);
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
+/* Scrollbar — custom bar only on fine-pointer devices (desktop).
+   Touch devices use the platform's overlay scrollbar (no reserved gutter). */
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.14);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(15, 23, 42, 0.26);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 23, 42, 0.26);
-  background-clip: padding-box;
-  border: 2px solid transparent;
-}
-::-webkit-scrollbar-track { background: transparent; }
 
 /* ------------------------------------------------------------
    RTL support
