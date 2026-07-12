@@ -157,20 +157,197 @@ export const patients: Patient[] = [
 ];
 
 // ---------------- Rendez-vous ---------------------------------
+// Generated relative to "today" so a demo always has fresh appointments
+// clustered around the current date. Deterministic per calendar date
+// via a seeded PRNG so multiple reloads on the same day are consistent.
 
-export const rendezVous: RendezVous[] = [
-  { id: "rdv1", patient_id: "p1", medecin_id: "u1", date: today(0), heure: "09:00", duree_minutes: 20, motif: "Suivi diabète", statut: "CONFIRME" },
-  { id: "rdv2", patient_id: "p3", medecin_id: "u2", date: today(0), heure: "09:30", duree_minutes: 30, motif: "Contrôle cardio", statut: "EN_ATTENTE" },
-  { id: "rdv3", patient_id: "p4", medecin_id: "u1", date: today(0), heure: "10:15", duree_minutes: 20, motif: "Consultation générale", statut: "CONFIRME" },
-  { id: "rdv4", patient_id: "p2", medecin_id: "u1", date: today(0), heure: "11:00", duree_minutes: 20, motif: "Renouvellement ordonnance", statut: "CONFIRME" },
-  { id: "rdv5", patient_id: "p6", medecin_id: "u1", date: today(0), heure: "14:00", duree_minutes: 30, motif: "Suivi HTA", statut: "CONFIRME" },
-  { id: "rdv6", patient_id: "p5", medecin_id: "u1", date: today(1), heure: "09:00", duree_minutes: 20, motif: "Toux persistante", statut: "EN_ATTENTE" },
-  { id: "rdv7", patient_id: "p7", medecin_id: "u2", date: today(1), heure: "10:00", duree_minutes: 20, motif: "Bilan lipidique", statut: "CONFIRME" },
-  { id: "rdv8", patient_id: "p8", medecin_id: "u1", date: today(2), heure: "11:30", duree_minutes: 20, motif: "Suivi HTA", statut: "CONFIRME" },
-  { id: "rdv9", patient_id: "p1", medecin_id: "u2", date: today(-1), heure: "15:00", duree_minutes: 20, motif: "Contrôle cardio", statut: "TERMINE" },
-  { id: "rdv10", patient_id: "p6", medecin_id: "u1", date: today(-2), heure: "10:00", duree_minutes: 20, motif: "Suivi diabète", statut: "TERMINE" },
-  { id: "rdv11", patient_id: "p4", medecin_id: "u1", date: today(-3), heure: "09:30", duree_minutes: 20, motif: "Consultation générale", statut: "ABSENT" },
+const RDV_MOTIFS_GENERAL = [
+  "Consultation générale",
+  "Renouvellement ordonnance",
+  "Résultats d'analyses",
+  "Certificat médical",
+  "Bilan santé annuel",
+  "Rhume / grippe",
+  "Fièvre inexpliquée",
+  "Toux persistante",
+  "Douleur lombaire",
+  "Céphalées",
+  "Douleur abdominale",
+  "Vaccination",
+  "Anxiété / stress",
+  "Consultation urgente",
+  "Contrôle post-opératoire",
 ];
+const RDV_MOTIFS_CARDIO = [
+  "Contrôle cardio",
+  "Bilan lipidique",
+  "ECG de contrôle",
+  "Suivi post-infarctus",
+  "Palpitations",
+  "Douleur thoracique",
+];
+const RDV_MOTIFS_CHRONIQUE = [
+  "Suivi diabète",
+  "Suivi HTA",
+  "Suivi diabète + HTA",
+  "Renouvellement traitement chronique",
+  "Contrôle tension",
+  "Contrôle glycémie",
+  "Suivi asthme",
+  "Suivi hypothyroïdie",
+];
+
+// Time slots — 8h00 to 18h30 in 15-minute increments
+const RDV_SLOTS: string[] = (() => {
+  const slots: string[] = [];
+  for (let h = 8; h <= 18; h++) {
+    for (const m of [0, 15, 30, 45]) {
+      if (h === 18 && m > 30) break;
+      if (h === 12 && m >= 30) continue; // lunch break start
+      if (h === 13 && m < 30) continue;   // lunch break end
+      slots.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+  return slots;
+})();
+
+const RDV_DURATIONS = [15, 20, 20, 20, 30, 30, 45];
+
+// Deterministic PRNG so a given calendar date always produces the same schedule
+function mulberry32(seed: number) {
+  let s = seed >>> 0;
+  return function () {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function hashStr(s: string): number {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function pick<T>(rng: () => number, arr: readonly T[]): T {
+  return arr[Math.floor(rng() * arr.length)];
+}
+function pickN<T>(rng: () => number, arr: readonly T[], n: number): T[] {
+  const copy = arr.slice();
+  const out: T[] = [];
+  for (let i = 0; i < n && copy.length; i++) {
+    const idx = Math.floor(rng() * copy.length);
+    out.push(copy.splice(idx, 1)[0]);
+  }
+  return out;
+}
+
+function generateRendezVous(): RendezVous[] {
+  const now = new Date();
+  const currentHourMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const patientCardio = ["p3"]; // known cardio patient
+  const patientChronique = ["p1", "p3", "p6", "p8"]; // diabète / HTA
+  const allPatients = ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"];
+  const medecinGeneraliste = "u1";
+  const medecinCardio = "u2";
+
+  const list: RendezVous[] = [];
+  let counter = 1;
+
+  // Range: 60 days before to 90 days after today
+  for (let offset = -60; offset <= 90; offset++) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    const iso = d.toISOString().slice(0, 10);
+    const dow = d.getDay(); // 0 Sun ... 5 Fri, 6 Sat
+
+    // Friday is off in Algeria; Saturday is a light day
+    if (dow === 5) continue;
+
+    // Density profile: heaviest near today, tapering off
+    const abs = Math.abs(offset);
+    const rng = mulberry32(hashStr(iso));
+    let count: number;
+    if (abs <= 3) count = 7 + Math.floor(rng() * 5);       // 7-11 near today
+    else if (abs <= 10) count = 5 + Math.floor(rng() * 4); // 5-8
+    else if (abs <= 21) count = 3 + Math.floor(rng() * 3); // 3-5
+    else if (abs <= 45) count = 2 + Math.floor(rng() * 2); // 2-3
+    else count = 1 + Math.floor(rng() * 2);                // 1-2
+    if (dow === 6) count = Math.max(1, Math.floor(count * 0.5)); // Saturdays lighter
+
+    const slots = pickN(rng, RDV_SLOTS, Math.min(count, RDV_SLOTS.length))
+      .sort((a, b) => a.localeCompare(b));
+
+    for (const heure of slots) {
+      // 25% of appointments go to the cardiologist, otherwise généraliste
+      const isCardio = rng() < 0.25;
+      const medecin_id = isCardio ? medecinCardio : medecinGeneraliste;
+      const pool = isCardio
+        ? [...patientCardio, ...allPatients]
+        : rng() < 0.55
+          ? [...patientChronique, ...allPatients]
+          : allPatients;
+      const patient_id = pick(rng, pool);
+
+      const motif = isCardio
+        ? pick(rng, RDV_MOTIFS_CARDIO)
+        : rng() < 0.4
+          ? pick(rng, RDV_MOTIFS_CHRONIQUE)
+          : pick(rng, RDV_MOTIFS_GENERAL);
+
+      const duree_minutes = pick(rng, RDV_DURATIONS);
+
+      // Status distribution based on when the RDV is relative to "now"
+      let statut: RendezVous["statut"];
+      const [hh, mm] = heure.split(":").map(Number);
+      const rdvMinutes = hh * 60 + mm;
+
+      if (offset < 0) {
+        // Past days: mostly done, some absent/cancelled
+        const r = rng();
+        statut = r < 0.78 ? "TERMINE" : r < 0.90 ? "ABSENT" : "ANNULE";
+      } else if (offset > 0) {
+        // Future days: confirmed or pending, small cancel rate
+        const r = rng();
+        statut = r < 0.62 ? "CONFIRME" : r < 0.94 ? "EN_ATTENTE" : "ANNULE";
+      } else {
+        // Today: split by current time
+        if (rdvMinutes + duree_minutes <= currentHourMinutes - 15) {
+          // clearly finished
+          const r = rng();
+          statut = r < 0.85 ? "TERMINE" : r < 0.94 ? "ABSENT" : "ANNULE";
+        } else if (rdvMinutes <= currentHourMinutes + 30) {
+          // in progress / very soon — waiting room
+          const r = rng();
+          statut = r < 0.55 ? "EN_ATTENTE" : r < 0.90 ? "CONFIRME" : "TERMINE";
+        } else {
+          // later today
+          const r = rng();
+          statut = r < 0.72 ? "CONFIRME" : r < 0.96 ? "EN_ATTENTE" : "ANNULE";
+        }
+      }
+
+      list.push({
+        id: `rdv-${iso}-${counter++}`,
+        patient_id,
+        medecin_id,
+        date: iso,
+        heure,
+        duree_minutes,
+        motif,
+        statut,
+      });
+    }
+  }
+
+  return list;
+}
+
+export const rendezVous: RendezVous[] = generateRendezVous();
 
 // ---------------- Consultations -------------------------------
 

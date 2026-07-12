@@ -311,7 +311,7 @@ export const useApp = create<AppState>()(
         const { toasts, ...rest } = state as any;
         return rest;
       },
-      version: 1,
+      version: 2,
     },
   ),
 );

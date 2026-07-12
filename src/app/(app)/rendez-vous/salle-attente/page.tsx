@@ -22,15 +22,15 @@ export default function SalleAttentePage() {
     .sort((a, b) => a.heure.localeCompare(b.heure));
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       <Link href="/rendez-vous" className="inline-flex items-center gap-1 text-[12px] text-ink-500 hover:text-ink-800 cursor-pointer transition-colors">
         <ChevronLeft className="h-3.5 w-3.5 dir-icon" /> {t("rdv_title")}
       </Link>
       <SectionHeader eyebrow={t("waiting_queue")} title={t("wait_room_title")} description={`${waiting.length} ${t("waiting_today")}`} />
 
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
         <div className="bg-white rounded-lg border border-line shadow-xs">
-          <div className="px-4 py-3 border-b border-line flex items-center justify-between gap-3">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-line flex items-center justify-between gap-3">
             <div className="text-[13px] font-semibold text-ink-800 tracking-crisp min-w-0 truncate">{t("waiting_status")}</div>
             <div className="shrink-0"><Badge tone="info" dot>{waiting.length}</Badge></div>
           </div>
@@ -103,7 +103,7 @@ export default function SalleAttentePage() {
         </div>
 
         <div className="bg-white rounded-lg border border-line shadow-xs">
-          <div className="px-4 py-3 border-b border-line flex items-center justify-between gap-3">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-line flex items-center justify-between gap-3">
             <div className="text-[13px] font-semibold text-ink-800 tracking-crisp min-w-0 truncate">{t("status_done_plural")}</div>
             <div className="shrink-0"><Badge tone="success" dot>{done.length}</Badge></div>
           </div>

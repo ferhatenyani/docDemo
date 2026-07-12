@@ -48,24 +48,28 @@ export default function NomenclaturePage() {
       ) : (
         <div className="grid gap-3">
           {Object.entries(grouped).map(([cat, list]) => (
-            <Card key={cat} padding="md">
-              <div className="flex items-center gap-2 mb-2">
+            <Card key={cat} padding="sm" className="sm:p-4">
+              <div className="flex items-center gap-2 mb-2 px-1 sm:px-0">
                 <div className="text-[13px] font-semibold text-ink-800 min-w-0 truncate">{cat}</div>
                 <Badge tone="neutral" size="sm">{list.length}</Badge>
               </div>
               <div className="divide-y divide-line">
                 {list.map((a) => (
-                  <div key={a.code} className="py-2 flex items-center gap-3">
-                    <div className="tabular text-[12px] text-ink-500 w-20 shrink-0">{a.code}</div>
-                    <div className="flex-1 min-w-0 text-[13px] text-ink-800 truncate">{a.libelle}</div>
-                    <div className="text-[13px] font-semibold text-ink-900 tabular w-24 text-right shrink-0">{formatDA(a.prix_da)}</div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button aria-label={t("edit")} onClick={() => openEdit(a)} className="h-8 w-8 grid place-items-center rounded-full hover:bg-ink-100 cursor-pointer text-ink-600">
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button aria-label={t("delete")} onClick={() => { deleteActe(a.code); pushToast({ title: t("acte_deleted"), tone: "danger" }); }} className="h-8 w-8 grid place-items-center rounded-full hover:bg-red-50 cursor-pointer text-danger">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                  <div key={a.code} className="py-2.5 sm:py-2 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <div className="tabular text-[11px] sm:text-[12px] text-ink-500 shrink-0 sm:w-20">{a.code}</div>
+                      <div className="min-w-0 text-[13px] text-ink-800 truncate flex-1">{a.libelle}</div>
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 shrink-0">
+                      <div className="text-[13px] font-semibold text-ink-900 tabular whitespace-nowrap sm:w-24 sm:text-right">{formatDA(a.prix_da)}</div>
+                      <div className="flex items-center gap-0.5 shrink-0">
+                        <button aria-label={t("edit")} onClick={() => openEdit(a)} className="h-8 w-8 grid place-items-center rounded-full hover:bg-ink-100 cursor-pointer text-ink-600">
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button aria-label={t("delete")} onClick={() => { deleteActe(a.code); pushToast({ title: t("acte_deleted"), tone: "danger" }); }} className="h-8 w-8 grid place-items-center rounded-full hover:bg-red-50 cursor-pointer text-danger">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
