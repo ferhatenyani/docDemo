@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "docpilore — Gestion Médicale · إدارة طبية",
+  title: "docpilote — Gestion Médicale · إدارة طبية",
   description: "Système de gestion pour cabinets et cliniques en Algérie · نظام إدارة العيادات والمصحّات في الجزائر",
 };
 

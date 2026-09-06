@@ -19,7 +19,11 @@ import {
   Check,
   Sparkles,
   Play,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
+
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 type Locale = "fr" | "en";
 
@@ -102,7 +106,10 @@ const dict = {
     form_message: "Message (optionnel)",
     form_message_ph: "Nombre de médecins, besoins spécifiques…",
     form_submit: "Envoyer la demande",
+    form_sending: "Envoi…",
     form_success: "Merci. Nous vous répondons sous 24 h.",
+    form_error: "L'envoi a échoué. Réessayez, ou écrivez-nous directement.",
+    form_retry: "Réessayer",
 
     footer_tag: "Le système de gestion des cliniques modernes.",
     footer_copy: "Tous droits réservés.",
@@ -194,7 +201,10 @@ const dict = {
     form_message: "Message (optional)",
     form_message_ph: "Number of doctors, specific needs…",
     form_submit: "Send request",
+    form_sending: "Sending…",
     form_success: "Thanks. We'll get back within 24h.",
+    form_error: "Sending failed. Try again, or email us directly.",
+    form_retry: "Try again",
 
     footer_tag: "The management system for modern clinics.",
     footer_copy: "All rights reserved.",
@@ -214,10 +224,48 @@ const dict = {
 
 type Dict = { [K in keyof (typeof dict)["fr"]]: string };
 
+type FormStatus = "idle" | "loading" | "success" | "error";
+
 export default function LandingPage() {
   const [locale, setLocale] = useState<Locale>("fr");
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
   const t = dict[locale];
+
+  async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setStatus("error");
+      return;
+    }
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    // Honeypot — if a bot filled this, silently succeed and drop.
+    if (data.get("botcheck")) {
+      setStatus("success");
+      form.reset();
+      return;
+    }
+    data.append("access_key", WEB3FORMS_ACCESS_KEY);
+    data.append("subject", "Nouvelle demande — docpilote");
+    data.append("from_name", "docpilote landing");
+
+    setStatus("loading");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data,
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
 
   const features = [
     { icon: Users, title: t.f_patients, desc: t.f_patients_desc, tone: "brand" as const },
@@ -248,10 +296,10 @@ export default function LandingPage() {
       {/* NAV */}
       <header className="sticky top-0 z-40 border-b border-line/60 bg-white/85 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:h-16 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="docpilore">
+          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="docpilote">
             <BrandMark />
             <span className="text-[15px] font-semibold tracking-tightest text-ink-900">
-              docpilore
+              docpilote
             </span>
           </Link>
 
@@ -501,7 +549,7 @@ export default function LandingPage() {
               </div>
 
               <div className="rounded-2xl border border-line bg-surface-muted p-4 shadow-xs sm:p-6">
-                {submitted ? (
+                {status === "success" ? (
                   <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 text-center sm:min-h-[320px]">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success-soft text-success">
                       <Check className="h-6 w-6" strokeWidth={2.5} />
@@ -512,12 +560,19 @@ export default function LandingPage() {
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setSubmitted(true);
-                    }}
+                    onSubmit={handleContactSubmit}
                     className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4"
                   >
+                    {/* Honeypot — must stay empty */}
+                    <input
+                      type="checkbox"
+                      name="botcheck"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden
+                      className="absolute left-[-9999px] top-[-9999px] h-0 w-0 opacity-0"
+                    />
+
                     <Field
                       label={t.form_name}
                       placeholder={t.form_name_ph}
@@ -545,17 +600,39 @@ export default function LandingPage() {
                       </label>
                       <textarea
                         id="message"
+                        name="message"
                         rows={3}
                         placeholder={t.form_message_ph}
                         className="mt-1 w-full rounded-lg border border-line-strong bg-white px-3 py-2 text-[14px] text-ink-900 placeholder:text-ink-400 shadow-xs transition focus:border-brand-500 focus:shadow-ring"
                       />
                     </div>
+
+                    {status === "error" && (
+                      <div
+                        role="alert"
+                        className="sm:col-span-2 flex items-start gap-2 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2 text-[13px] text-danger"
+                      >
+                        <AlertCircle className="mt-0.5 h-4 w-4 flex-none" strokeWidth={2.2} />
+                        <span>{t.form_error}</span>
+                      </div>
+                    )}
+
                     <button
                       type="submit"
-                      className="sm:col-span-2 mt-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-ink-900 text-[14px] font-semibold text-white shadow-pop transition hover:bg-ink-800 active:scale-[0.99]"
+                      disabled={status === "loading"}
+                      className="sm:col-span-2 mt-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-ink-900 text-[14px] font-semibold text-white shadow-pop transition hover:bg-ink-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
                     >
-                      {t.form_submit}
-                      <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+                      {status === "loading" ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2.5} />
+                          {t.form_sending}
+                        </>
+                      ) : (
+                        <>
+                          {status === "error" ? t.form_retry : t.form_submit}
+                          <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+                        </>
+                      )}
                     </button>
                   </form>
                 )}
@@ -573,7 +650,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2">
                 <BrandMark />
                 <span className="text-[15px] font-semibold tracking-tightest text-ink-900">
-                  docpilore
+                  docpilote
                 </span>
               </div>
               <p className="mt-2 max-w-xs text-[12px] leading-snug text-ink-600 sm:text-[13px]">
@@ -597,7 +674,7 @@ export default function LandingPage() {
             />
           </div>
           <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-line/70 pt-5 text-[11px] text-ink-500 sm:flex-row sm:items-center sm:text-[12px]">
-            <div>© {new Date().getFullYear()} docpilore. {t.footer_copy}</div>
+            <div>© {new Date().getFullYear()} docpilote. {t.footer_copy}</div>
             <div>Alger · Oran · Constantine</div>
           </div>
         </div>
@@ -772,7 +849,7 @@ function DashboardPreview({ t }: { t: Dict }) {
         <span className="h-2 w-2 rounded-full bg-[#febc2e]" aria-hidden />
         <span className="h-2 w-2 rounded-full bg-[#28c840]" aria-hidden />
         <div className="ml-3 h-4 flex-1 truncate rounded-md bg-surface-muted px-2 text-[9px] leading-4 text-ink-500">
-          app.docpilore.dz/dashboard
+          app.docpilote.dz/dashboard
         </div>
       </div>
 
